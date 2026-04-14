@@ -1,3 +1,5 @@
 spring:
   application:
     name: ms-teams
+server:
+  port: 8083

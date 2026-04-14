@@ -1,3 +1,5 @@
 spring:
   application:
     name: ms-fixtures
+server:
+  port: 8085

@@ -1,3 +1,5 @@
 spring:
   application:
     name: ms-leagues
+server:
+  port: 8082
