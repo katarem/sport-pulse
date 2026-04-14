@@ -1,3 +1,5 @@
 spring:
   application:
     name: ms-auth
+server:
+  port: 8081

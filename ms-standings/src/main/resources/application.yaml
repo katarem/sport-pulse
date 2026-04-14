@@ -1,3 +1,5 @@
 spring:
   application:
     name: ms-standings
+server:
+  port: 8086

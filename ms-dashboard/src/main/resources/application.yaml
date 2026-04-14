@@ -1,3 +1,5 @@
 spring:
   application:
     name: ms-dashboard
+server:
+  port: 8089
