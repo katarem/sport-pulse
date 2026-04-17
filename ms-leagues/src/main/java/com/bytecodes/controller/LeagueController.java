@@ -21,10 +21,9 @@ public class LeagueController {
     @GetMapping
     public List<LeagueResponse> getLeagues(
             @RequestParam(required = false) String country,
-            @RequestParam(required = false) Integer season,
-            @RequestParam(required = false) Integer id
+            @RequestParam(required = false) Integer season
     ) {
-        return leagueService.getLeagues(country, season, id);
+        return leagueService.getLeagues(country, season);
     }
 
     @GetMapping("/{leagueId}")
