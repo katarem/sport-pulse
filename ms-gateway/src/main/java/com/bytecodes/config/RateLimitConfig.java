@@ -5,6 +5,8 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.bucket4j.Refill;
+import jakarta.validation.Valid;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@EnableConfigurationProperties(RateLimitProperties.class)
 public class RateLimitConfig {
 
+    private final RateLimitProperties properties;
+
+    public RateLimitConfig(RateLimitProperties properties) {
+        this.properties = properties;
+    }
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
     @Bean
@@ -49,8 +57,8 @@ public class RateLimitConfig {
 
     private Bucket newBucket() {
         Bandwidth limit = Bandwidth.classic(
-                60,
-                Refill.intervally(60, Duration.ofMinutes(1))
+                properties.getCapacity(),
+                Refill.intervally(properties.getRefillAmount(), Duration.of(properties.getTime(), properties.getTimeUnit().toChronoUnit()))
         );
 
         return Bucket.builder()

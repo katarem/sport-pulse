@@ -2,6 +2,12 @@ spring:
   application:
     name: ms-gateway
 
+ratelimit:
+  capacity: 60
+  refillAmount: 60
+  timeUnit: MINUTES
+  time: 1
+
 management:
   endpoints:
     web:
