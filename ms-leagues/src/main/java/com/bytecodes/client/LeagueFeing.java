@@ -15,8 +15,7 @@ public interface LeagueFeing {
     @GetMapping("/leagues")
     ApiLeagueResponse getLeagues(
             @RequestParam(required = false) String country,
-            @RequestParam(required = false) Integer season,
-            @RequestParam(required = false) Integer id
+            @RequestParam(required = false) Integer season
     );
 
     @GetMapping("/leagues")
