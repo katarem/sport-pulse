@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface LeagueService {
 
-    public List<LeagueResponse> getLeagues(String country, Integer season, Integer id);
+    public List<LeagueResponse> getLeagues(String country, Integer season);
     public LeagueDetailResponse getLeagueById(int leagueId);
 }

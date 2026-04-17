@@ -28,8 +28,8 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public List<LeagueResponse> getLeagues(String country, Integer season, Integer id) {
-        return client.getLeagues(country, season, id).response().stream()
+    public List<LeagueResponse> getLeagues(String country, Integer season) {
+        return client.getLeagues(country, season).response().stream()
                 .map(wrapper -> {
                     LeagueResponse dto = mapper.toLeagueResponse(wrapper);
 
