@@ -1,0 +1,5 @@
+ratelimit:
+  time: 1
+  timeUnit: SECONDS
+  capacity: 5
+  refillAmount: 5
