@@ -1,6 +1,7 @@
 package com.bytecodes.config;
 
 import com.bytecodes.business.RateLimitError;
+import com.bytecodes.utils.RateLimitUtils;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
@@ -34,7 +35,7 @@ public class RateLimitConfig {
     @Bean
     public HandlerFilterFunction<ServerResponse, ServerResponse> globalRateLimitFilter() {
         return (request, next) -> {
-            String clientIp = obtainClientIp(request);
+            String clientIp = RateLimitUtils.obtainClientIp(request);
             Bucket bucket = buckets.computeIfAbsent(clientIp, key -> newBucket());
 
             ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
@@ -66,9 +67,5 @@ public class RateLimitConfig {
                 .build();
     }
 
-    private String obtainClientIp(ServerRequest request) {
-        return request.remoteAddress()
-                .map(addr -> addr.getAddress().getHostAddress())
-                .orElseThrow();
-    }
+
 }
