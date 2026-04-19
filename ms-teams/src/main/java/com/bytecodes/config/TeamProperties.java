@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 @Setter
 @Validated
 @ConfigurationProperties(prefix = "api.football")
-public class TeamsProperties {
+public class TeamProperties {
     @NotBlank
     private String key;
 

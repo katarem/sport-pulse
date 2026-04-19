@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(TeamsProperties.class)
-public class TeamsClient {
-    private final TeamsProperties properties;
-    public TeamsClient(TeamsProperties properties) {
+@EnableConfigurationProperties(TeamProperties.class)
+public class TeamConfig {
+    private final TeamProperties properties;
+    public TeamConfig(TeamProperties properties) {
         this.properties = properties;
     }
 
