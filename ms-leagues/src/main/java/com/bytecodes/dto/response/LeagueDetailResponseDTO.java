@@ -7,12 +7,12 @@ import java.util.List;
 
 @Setter
 @Getter
-public class LeagueDetailResponse {
+public class LeagueDetailResponseDTO {
     private int id;
     private String name;
     private String type;
     private String country;
     private String logo;
     private List<Integer> seasons;
-    private SeasonResponse currentSeason;
+    private SeasonResponseDTO currentSeason;
 }
