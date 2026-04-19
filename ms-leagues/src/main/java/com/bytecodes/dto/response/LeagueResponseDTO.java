@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LeagueResponse
+public class LeagueResponseDTO
 
  {
      private int id;

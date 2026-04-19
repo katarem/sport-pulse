@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SeasonResponse{
+public class SeasonResponseDTO {
        private Integer year;
         private String startDate;
         private String endDate;
