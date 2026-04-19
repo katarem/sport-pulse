@@ -1,10 +1,10 @@
 package com.bytecodes.service.impl;
 
-import com.bytecodes.client.LeagueFeing;
+import com.bytecodes.client.LeagueClient;
 import com.bytecodes.dto.external.ApiLeagueResponse;
 import com.bytecodes.dto.external.LeagueWrapper;
-import com.bytecodes.dto.response.LeagueDetailResponse;
-import com.bytecodes.dto.response.LeagueResponse;
+import com.bytecodes.dto.response.LeagueDetailResponseDTO;
+import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.exception.LeagueNotFoundException;
 import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.service.LeagueService;
@@ -17,21 +17,21 @@ import java.util.List;
 @Service
 public class LeagueServiceImpl implements LeagueService {
 
-    private final LeagueFeing client;
+    private final LeagueClient client;
     private final LeagueMapper mapper;
     private final LeagueServiceHelper helper;
 
-    public LeagueServiceImpl(LeagueFeing client, LeagueMapper leagueMapper, LeagueServiceHelper helper) {
+    public LeagueServiceImpl(LeagueClient client, LeagueMapper leagueMapper, LeagueServiceHelper helper) {
         this.client = client;
         this.mapper = leagueMapper;
         this.helper = helper;
     }
 
     @Override
-    public List<LeagueResponse> getLeagues(String country, Integer season) {
+    public List<LeagueResponseDTO> getLeagues(String country, Integer season) {
         return client.getLeagues(country, season).response().stream()
                 .map(wrapper -> {
-                    LeagueResponse dto = mapper.toLeagueResponse(wrapper);
+                    LeagueResponseDTO dto = mapper.toLeagueResponse(wrapper);
 
                     dto.setCurrentSeason(helper.findCurrentSeasonYear(wrapper.seasons()));
                     dto.setStartDate(helper.findCurrentSeasonStart(wrapper.seasons()));
@@ -43,14 +43,13 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public LeagueDetailResponse getLeagueById(int leagueId) {
+    public LeagueDetailResponseDTO getLeagueById(int leagueId) {
         ApiLeagueResponse apiResponse = client.getLeagueById(leagueId);
-
         LeagueWrapper wrapper = apiResponse.response().stream()
                 .findFirst()
-                .orElseThrow(() -> new LeagueNotFoundException("No existe una liga con el ID proporcionado"));
+                .orElseThrow(LeagueNotFoundException::new);
 
-        LeagueDetailResponse dto = mapper.toLeagueDetailResponse(wrapper);
+        LeagueDetailResponseDTO dto = mapper.toLeagueDetailResponse(wrapper);
 
         dto.setSeasons(helper.getLastSeasons(wrapper.seasons()));
         dto.setCurrentSeason(helper.toCurrentSeason(wrapper.seasons()));

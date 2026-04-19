@@ -1,9 +1,10 @@
 package com.bytecodes.controller;
 
 
-import com.bytecodes.dto.response.LeagueDetailResponse;
-import com.bytecodes.dto.response.LeagueResponse;
+import com.bytecodes.dto.response.LeagueDetailResponseDTO;
+import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.service.LeagueService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class LeagueController {
     }
 
     @GetMapping
-    public List<LeagueResponse> getLeagues(
+    public List<LeagueResponseDTO> getLeagues(
             @RequestParam(required = false) String country,
             @RequestParam(required = false) Integer season
     ) {
@@ -27,7 +28,7 @@ public class LeagueController {
     }
 
     @GetMapping("/{leagueId}")
-    public LeagueDetailResponse getLeagueById(@PathVariable("leagueId") int id) {
+    public LeagueDetailResponseDTO getLeagueById(@PathVariable("leagueId") int id) {
         return leagueService.getLeagueById(id);
     }
 }

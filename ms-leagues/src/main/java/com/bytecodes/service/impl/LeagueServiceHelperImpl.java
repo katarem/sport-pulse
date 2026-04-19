@@ -1,7 +1,7 @@
 package com.bytecodes.service.impl;
 
 import com.bytecodes.dto.external.Season;
-import com.bytecodes.dto.response.SeasonResponse;
+import com.bytecodes.dto.response.SeasonResponseDTO;
 import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.service.LeagueServiceHelper;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class LeagueServiceHelperImpl implements LeagueServiceHelper {
     }
 
     @Override
-    public SeasonResponse toCurrentSeason(List<Season> seasons) {
+    public SeasonResponseDTO toCurrentSeason(List<Season> seasons) {
         return seasons.stream()
                 .filter(Season::current)
                 .findFirst()

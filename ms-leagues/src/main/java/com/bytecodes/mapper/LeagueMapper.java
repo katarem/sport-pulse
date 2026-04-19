@@ -1,9 +1,9 @@
 package com.bytecodes.mapper;
 import com.bytecodes.dto.external.LeagueWrapper;
 import com.bytecodes.dto.external.Season;
-import com.bytecodes.dto.response.LeagueDetailResponse;
-import com.bytecodes.dto.response.LeagueResponse;
-import com.bytecodes.dto.response.SeasonResponse;
+import com.bytecodes.dto.response.LeagueDetailResponseDTO;
+import com.bytecodes.dto.response.LeagueResponseDTO;
+import com.bytecodes.dto.response.SeasonResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,7 +18,7 @@ public interface LeagueMapper {
     @Mapping(source = "league.type", target = "type")
     @Mapping(source = "country.name", target = "country")
     @Mapping(source = "league.logo", target = "logo")
-    LeagueResponse toLeagueResponse(LeagueWrapper wrapper);
+    LeagueResponseDTO toLeagueResponse(LeagueWrapper wrapper);
 
 
     // ---------------------------
@@ -31,7 +31,7 @@ public interface LeagueMapper {
     @Mapping(source = "league.logo", target = "logo")
     @Mapping(target = "seasons", ignore = true)
     @Mapping(target = "currentSeason", ignore = true)
-    LeagueDetailResponse toLeagueDetailResponse(LeagueWrapper wrapper);
+    LeagueDetailResponseDTO toLeagueDetailResponse(LeagueWrapper wrapper);
     // ---------------------------
     // Mapeo para currentSeason del LeagueDetail
     // ---------------------------
@@ -39,7 +39,7 @@ public interface LeagueMapper {
     @Mapping(source = "start", target = "startDate")
     @Mapping(source = "end", target = "endDate")
     @Mapping(source = "current", target = "current")
-    SeasonResponse toCurrentSeasonResponse(Season season);
+    SeasonResponseDTO toCurrentSeasonResponse(Season season);
 
 
 }
