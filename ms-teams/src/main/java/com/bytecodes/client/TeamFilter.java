@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 public class TeamFilter {
     @NotBlank
-    @Min(1)
+    @Min(value = 1, message = "Coloca el ID de la Liga. Ejm 61")
     private int league;
     @NotBlank
-    @Min(1)
+    @Min(value = 1,message = "Coloca el año de la temporada. Ejm 2024")
     private int season;
 }
