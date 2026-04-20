@@ -7,3 +7,8 @@ api:
   football:
     url: ${API_FOOTBALL_URL}
     key: ${API_FOOTBALL_KEY}
+logging:
+  level:
+    com.bytecodes.client: DEBUG
+    feign: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
