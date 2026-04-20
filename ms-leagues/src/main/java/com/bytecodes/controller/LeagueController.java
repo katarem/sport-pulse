@@ -1,10 +1,12 @@
 package com.bytecodes.controller;
 
 
+import com.bytecodes.client.LeagueFilter;
 import com.bytecodes.dto.response.LeagueDetailResponseDTO;
 import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.service.LeagueService;
 import jakarta.validation.Valid;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +23,8 @@ public class LeagueController {
 
     @GetMapping
     public List<LeagueResponseDTO> getLeagues(
-            @RequestParam(required = false) String country,
-            @RequestParam(required = false) Integer season
-    ) {
-        return leagueService.getLeagues(country, season);
+            @Valid @SpringQueryMap LeagueFilter filter) {
+        return leagueService.getLeagues(filter);
     }
 
     @GetMapping("/{leagueId}")
