@@ -1,6 +1,7 @@
 package com.bytecodes.service.impl;
 
 import com.bytecodes.client.LeagueClient;
+import com.bytecodes.client.LeagueFilter;
 import com.bytecodes.config.CacheConfig;
 import com.bytecodes.dto.external.ApiLeagueResponse;
 import com.bytecodes.dto.external.LeagueWrapper;
@@ -24,16 +25,20 @@ public class LeagueServiceImpl implements LeagueService {
     private final LeagueMapper mapper;
     private final LeagueServiceHelper helper;
 
-    public LeagueServiceImpl(LeagueClient client, LeagueMapper leagueMapper, LeagueServiceHelper helper) {
+
+    public LeagueServiceImpl(LeagueClient client,
+                             LeagueMapper leagueMapper,
+                             LeagueServiceHelper helper ) {
         this.client = client;
         this.mapper = leagueMapper;
         this.helper = helper;
     }
-    @Cacheable(value = "leagues" , unless = "#result == null")
+
+    @Cacheable(value = "leagues", unless = "#result == null")
     @Override
-    public List<LeagueResponseDTO> getLeagues(String country, Integer season) {
-        log.info("Cache MISS Leagues → llamando a API-Football");
-        return client.getLeagues(country, season).response().stream()
+    public List<LeagueResponseDTO> getLeagues(LeagueFilter filter) {
+
+        return client.getLeagues(filter).response().stream()
                 .map(wrapper -> {
                     LeagueResponseDTO dto = mapper.toLeagueResponse(wrapper);
 
@@ -49,14 +54,13 @@ public class LeagueServiceImpl implements LeagueService {
     @Override
     @Cacheable(value = "leagueById" , key = "#leagueId", unless = "#result == null")
     public LeagueDetailResponseDTO getLeagueById(int leagueId) {
-        log.info(" Cache MISS ByID→ llamando a API-Football");
-        ApiLeagueResponse apiResponse = client.getLeagueById(leagueId);
+        LeagueFilter filter = LeagueFilter.byId(leagueId);
+        ApiLeagueResponse apiResponse = client.getLeagues(filter);
         LeagueWrapper wrapper = apiResponse.response().stream()
                 .findFirst()
                 .orElseThrow(LeagueNotFoundException::new);
 
         LeagueDetailResponseDTO dto = mapper.toLeagueDetailResponse(wrapper);
-
         dto.setSeasons(helper.getLastSeasons(wrapper.seasons()));
         dto.setCurrentSeason(helper.toCurrentSeason(wrapper.seasons()));
 
