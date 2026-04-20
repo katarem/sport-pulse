@@ -7,6 +7,8 @@ import com.bytecodes.mapper.FixtureMapper;
 import com.bytecodes.mapper.TeamMapper;
 import com.bytecodes.model.Fixture;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FixtureServiceImpl implements FixtureService {
 
     private final FixtureClient client;
@@ -22,8 +25,9 @@ public class FixtureServiceImpl implements FixtureService {
     private final TeamMapper teamMapper;
 
     @Override
+    @Cacheable(value = "fixtures", key = "{#filters.date, #filters}")
     public Set<Fixture> getFixtures(FixtureFilters filters) {
-
+        log.info("Getting the result");
         FixtureQueryFilters clientFilters = fixtureMapper.toClientFilters(filters);
 
         var response = client.getFixtures(clientFilters);
