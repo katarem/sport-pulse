@@ -24,6 +24,7 @@ public class FixturesController {
     Set<Fixture> getFixtures(@Valid FixtureFilters filters) {
         if(Objects.isNull(filters.getDate()))
             filters.setDate(DateUtil.getTodaySimpleDate());
-        return service.getFixtures(filters);
+        var fixtures = service.getFixtures(filters);
+        return fixtures;
     }
 }

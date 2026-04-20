@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1444795,
+    "date": "2026-04-20T18:00:00Z",
+    "status": {
+      "short": "NS",
+      "long": "Not Started"
+    },
+    "homeTeam": {
+      "id": 19587,
+      "name": "Westerlo U21",
+      "logo": "https://media.api-sports.io/football/teams/19587.png",
+      "goals": null
+    },
+    "awayTeam": {
+      "id": 26404,
+      "name": "K. Beerschot V.A. Reserve U21",
+      "logo": "https://media.api-sports.io/football/teams/26404.png",
+      "goals": null
+    },
+    "venue": {
+      "name": null,
+      "city": null
+    }
+  }
+]
