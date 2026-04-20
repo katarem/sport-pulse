@@ -6,7 +6,6 @@
 		<groupId>com.bytecodes</groupId>
 		<artifactId>sport-pulse</artifactId>
 		<version>1.0.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>ms-fixtures</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -119,6 +118,16 @@
 									<groupId>org.projectlombok</groupId>
 									<artifactId>lombok</artifactId>
 								</path>
+								<path>
+									<groupId>org.mapstruct</groupId>
+									<artifactId>mapstruct-processor</artifactId>
+									<version>1.5.5.Final</version>
+								</path>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok-mapstruct-binding</artifactId>
+									<version>0.2.0</version>
+								</path>
 							</annotationProcessorPaths>
 						</configuration>
 					</execution>
@@ -139,7 +148,6 @@
                                     <artifactId>mapstruct-processor</artifactId>
                                     <version>1.5.5.Final</version>
                                 </path>
-
                             </annotationProcessorPaths>
 						</configuration>
 					</execution>
