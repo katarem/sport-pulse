@@ -3,14 +3,27 @@ package com.bytecodes.client;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 @Getter
 @Setter
 public class TeamFilter {
+    @NotNull(message = "El ID de la liga es obligatorio ")
     @Min(value = 1, message = "Coloca el ID de la Liga. Ejm 61")
-    private int league;
+    private Integer league;
+    @NotNull(message = "La temporada es obligatoria")
     @Min(value = 1,message = "Coloca el año de la temporada. Ejm 2024")
-    private int season;
+    private Integer season;
+    @Min(value = 1,message = "Coloca el ID del equipo. Ejm 541")
+
+    private Integer id;
+
+    public static TeamFilter byId(Integer id) {
+        TeamFilter t = new TeamFilter();
+        t.setId(id);
+        return t;
+    }
 }
