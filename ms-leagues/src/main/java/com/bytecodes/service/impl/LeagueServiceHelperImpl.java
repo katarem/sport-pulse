@@ -4,19 +4,17 @@ import com.bytecodes.dto.external.Season;
 import com.bytecodes.dto.response.SeasonResponseDTO;
 import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.service.LeagueServiceHelper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 @Service
+@RequiredArgsConstructor
 public class LeagueServiceHelperImpl implements LeagueServiceHelper {
 
     private final LeagueMapper mapper;
-
-    public LeagueServiceHelperImpl(LeagueMapper mapper) {
-        this.mapper = mapper;
-    }
 
     @Override
     public Integer findCurrentSeasonYear(List<Season> seasons) {

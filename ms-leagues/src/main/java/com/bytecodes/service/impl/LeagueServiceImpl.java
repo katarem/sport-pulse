@@ -11,28 +11,21 @@ import com.bytecodes.exception.LeagueNotFoundException;
 import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.service.LeagueService;
 import com.bytecodes.service.LeagueServiceHelper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
+
 @Service
+@RequiredArgsConstructor
 public class LeagueServiceImpl implements LeagueService {
 
     private final LeagueClient client;
     private final LeagueMapper mapper;
     private final LeagueServiceHelper helper;
-
-
-    public LeagueServiceImpl(LeagueClient client,
-                             LeagueMapper leagueMapper,
-                             LeagueServiceHelper helper ) {
-        this.client = client;
-        this.mapper = leagueMapper;
-        this.helper = helper;
-    }
 
     @Cacheable(value = "leagues", unless = "#result == null")
     @Override

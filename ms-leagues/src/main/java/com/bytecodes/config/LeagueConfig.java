@@ -22,11 +22,4 @@ public class LeagueConfig {
             template.header("x-apisports-key", properties.getKey());
         };
     }
-// Para debugger
-    @Bean
-    Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL;
-    }
-
-
 }

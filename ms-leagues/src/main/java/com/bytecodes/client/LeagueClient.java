@@ -18,9 +18,4 @@ public interface LeagueClient {
     ApiLeagueResponse getLeagues(
             @Valid @SpringQueryMap LeagueFilter filter
     );
-/*
-    @GetMapping("/leagues")
-    ApiLeagueResponse getLeagueById( @Valid @SpringQueryMap LeagueFilter filter);
-
- */
 }
