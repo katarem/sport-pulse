@@ -1,5 +1,11 @@
 spring:
   application:
     name: ms-fixtures
+
+api:
+  football:
+    url: https://v3.football.api-sports.io
+    api-key: ${FOOTBALL_API_KEY}
+
 server:
   port: 8085

@@ -6,7 +6,6 @@
 		<groupId>com.bytecodes</groupId>
 		<artifactId>sport-pulse</artifactId>
 		<version>1.0.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>ms-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
