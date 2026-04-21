@@ -11,5 +11,6 @@ public class Fixture {
     private FixtureStatus status;
     private Team homeTeam;
     private Team awayTeam;
+    private League league;
     private Venue venue;
 }

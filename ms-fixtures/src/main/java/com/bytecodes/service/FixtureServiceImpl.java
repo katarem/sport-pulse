@@ -6,6 +6,7 @@ import com.bytecodes.dto.external.FixtureWrapperDTO;
 import com.bytecodes.dto.request.FixtureFilters;
 import com.bytecodes.exception.ExternalApiException;
 import com.bytecodes.mapper.FixtureMapper;
+import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.mapper.TeamMapper;
 import com.bytecodes.model.Fixture;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class FixtureServiceImpl implements FixtureService {
     private final FixtureClient client;
     private final FixtureMapper fixtureMapper;
     private final TeamMapper teamMapper;
+    private final LeagueMapper leagueMapper;
 
     @Override
     @Cacheable(value = "fixtures", key = "{#filters.date, #filters}")
@@ -58,6 +60,11 @@ public class FixtureServiceImpl implements FixtureService {
         if (Objects.nonNull(awayTeamDTO)) {
             fixture.setAwayTeam(teamMapper.toModel(awayTeamDTO));
             fixture.getAwayTeam().setGoals(fixtureWrapperDTO.getGoals().getOrDefault("away", null));
+        }
+
+        if (Objects.nonNull(fixtureWrapperDTO.getLeague())) {
+            var league = leagueMapper.mapToModel(fixtureWrapperDTO.getLeague());
+            fixture.setLeague(league);
         }
 
         return fixture;

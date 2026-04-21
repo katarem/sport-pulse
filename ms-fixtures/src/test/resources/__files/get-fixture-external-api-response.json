@@ -12,19 +12,19 @@
   "response": [
     {
       "fixture": {
-        "id": 1444795,
+        "id": 1402529,
         "referee": null,
         "timezone": "UTC",
-        "date": "2026-04-20T18:00:00+00:00",
-        "timestamp": 1776708000,
+        "date": "2026-04-21T18:45:00+00:00",
+        "timestamp": 1776797100,
         "periods": {
           "first": null,
           "second": null
         },
         "venue": {
-          "id": 0,
-          "name": null,
-          "city": null
+          "id": 12213,
+          "name": "The Leasing.com Stadium",
+          "city": "Macclesfield, Cheshire"
         },
         "status": {
           "long": "Not Started",
@@ -34,26 +34,26 @@
         }
       },
       "league": {
-        "id": 518,
-        "name": "Reserve Pro League",
-        "country": "Belgium",
-        "logo": "https://media.api-sports.io/football/leagues/518.png",
-        "flag": "https://media.api-sports.io/flags/be.svg",
+        "id": 50,
+        "name": "National League - North",
+        "country": "England",
+        "logo": "https://media.api-sports.io/football/leagues/50.png",
+        "flag": "https://media.api-sports.io/flags/gb-eng.svg",
         "season": 2025,
-        "round": "Regular Season - 23",
+        "round": "North - 41",
         "standings": true
       },
       "teams": {
         "home": {
-          "id": 19587,
-          "name": "Westerlo U21",
-          "logo": "https://media.api-sports.io/football/teams/19587.png",
+          "id": 1380,
+          "name": "Macclesfield",
+          "logo": "https://media.api-sports.io/football/teams/1380.png",
           "winner": null
         },
         "away": {
-          "id": 26404,
-          "name": "K. Beerschot V.A. Reserve U21",
-          "logo": "https://media.api-sports.io/football/teams/26404.png",
+          "id": 1826,
+          "name": "Southport",
+          "logo": "https://media.api-sports.io/football/teams/1826.png",
           "winner": null
         }
       },

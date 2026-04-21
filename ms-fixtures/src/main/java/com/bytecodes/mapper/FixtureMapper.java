@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {FixtureStatusMapper.class, VenueMapper.class})
+        uses = {FixtureStatusMapper.class, LeagueMapper.class, VenueMapper.class})
 public interface FixtureMapper {
 
     Fixture toModel(FixtureDTO dto);

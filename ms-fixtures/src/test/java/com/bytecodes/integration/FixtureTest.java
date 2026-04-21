@@ -5,6 +5,7 @@ import com.bytecodes.dto.request.FixtureFilters;
 import com.bytecodes.exception.GlobalExceptionHandler;
 import com.bytecodes.mapper.FixtureMapperImpl;
 import com.bytecodes.mapper.FixtureStatusMapperImpl;
+import com.bytecodes.mapper.LeagueMapperImpl;
 import com.bytecodes.mapper.TeamMapperImpl;
 import com.bytecodes.mapper.VenueMapperImpl;
 import com.bytecodes.util.DateUtil;
@@ -39,7 +40,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({GlobalExceptionHandler.class, CacheConfig.class, FixtureMapperImpl.class, VenueMapperImpl.class, TeamMapperImpl.class, FixtureStatusMapperImpl.class})
+@Import({GlobalExceptionHandler.class, CacheConfig.class, LeagueMapperImpl.class, FixtureMapperImpl.class, VenueMapperImpl.class, TeamMapperImpl.class, FixtureStatusMapperImpl.class})
 @AutoConfigureMockMvc
 public class FixtureTest {
 
