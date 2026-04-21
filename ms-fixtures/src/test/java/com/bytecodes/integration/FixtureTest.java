@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureMockMvc
 public class FixtureTest {
 
-    static WireMockServer externalApi = new WireMockServer(wireMockConfig().port(9000));
+    static final WireMockServer externalApi = new WireMockServer(wireMockConfig().port(9000));
 
     static final String ENDPOINT = "/api/fixtures";
     static final String EXTERNAL_ENDPOINT = "/fixtures";

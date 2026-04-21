@@ -2,7 +2,6 @@ package com.bytecodes.service;
 
 import com.bytecodes.client.FixtureClient;
 import com.bytecodes.client.FixtureQueryFilters;
-import com.bytecodes.dto.external.FixtureDTO;
 import com.bytecodes.dto.external.FixtureWrapperDTO;
 import com.bytecodes.dto.request.FixtureFilters;
 import com.bytecodes.exception.ExternalApiException;

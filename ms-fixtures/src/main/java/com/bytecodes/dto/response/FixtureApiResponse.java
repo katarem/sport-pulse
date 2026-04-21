@@ -3,7 +3,6 @@ package com.bytecodes.dto.response;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Collection;
 import java.util.Map;
 
 @Data
