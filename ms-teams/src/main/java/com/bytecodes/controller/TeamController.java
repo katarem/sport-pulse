@@ -6,7 +6,6 @@ import com.bytecodes.service.TeamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.openfeign.SpringQueryMap;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/teams")
 @RequiredArgsConstructor
-@Validated
 public class TeamController {
 
     private final TeamService teamService;
