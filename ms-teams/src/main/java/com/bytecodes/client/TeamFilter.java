@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 
 @Getter
@@ -14,8 +15,8 @@ public class TeamFilter {
     @NotNull(message = "El ID de la liga es obligatorio ")
     @Min(value = 1, message = "Coloca el ID de la Liga. Ejm 61")
     private Integer league;
-    @NotNull(message = "La temporada es obligatoria")
-    @Min(value = 1,message = "Coloca el año de la temporada. Ejm 2024")
+    @NotNull(message = "La temporada es obligatoria. Ejm 2024")
+    @Range(min = 2022, max = 2024, message = "Sólo se puede las temporadas del 2022 al 2024.")
     private Integer season;
     @Min(value = 1,message = "Coloca el ID del equipo. Ejm 541")
 
