@@ -2,6 +2,7 @@ package com.bytecodes.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,7 +32,8 @@ public class GlobalHandler {
                                 .getFieldError())
                         .getDefaultMessage()));
     }
-// Excepcion si el parametro esperado es un Int y se para un String
+
+    // Excepcion si el parametro esperado es un Int y se para un String
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleInvalidParam(MethodArgumentTypeMismatchException e) {
         return ResponseEntity
