@@ -1,5 +1,6 @@
 package com.bytecodes.controller;
 
+import com.bytecodes.model.LiveFixture;
 import com.bytecodes.service.FixtureService;
 import com.bytecodes.dto.request.FixtureFilters;
 import com.bytecodes.model.Fixture;
@@ -22,6 +23,12 @@ public class FixturesController {
     @GetMapping
     Set<Fixture> getFixtures(@Valid FixtureFilters filters) {
         var fixtures = service.getFixtures(FilterUtil.resolveFilters(filters));
+        return fixtures;
+    }
+
+    @GetMapping("/live")
+    Set<LiveFixture> getLiveFixtures() {
+        var fixtures = service.getLiveFixtures();
         return fixtures;
     }
 }

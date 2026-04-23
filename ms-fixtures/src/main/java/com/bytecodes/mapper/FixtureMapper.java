@@ -4,6 +4,7 @@ import com.bytecodes.client.FixtureQueryFilters;
 import com.bytecodes.dto.external.FixtureDTO;
 import com.bytecodes.dto.request.FixtureFilters;
 import com.bytecodes.model.Fixture;
+import com.bytecodes.model.LiveFixture;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
@@ -17,4 +18,5 @@ public interface FixtureMapper {
 
     FixtureQueryFilters toClientFilters(FixtureFilters filters);
 
+    LiveFixture mapToLive(Fixture fixture);
 }

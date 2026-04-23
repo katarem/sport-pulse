@@ -9,9 +9,8 @@ import com.bytecodes.mapper.LeagueMapperImpl;
 import com.bytecodes.mapper.TeamMapperImpl;
 import com.bytecodes.mapper.VenueMapperImpl;
 import com.bytecodes.util.DateUtil;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,22 +28,22 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.nio.charset.Charset;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({GlobalExceptionHandler.class, CacheConfig.class, LeagueMapperImpl.class, FixtureMapperImpl.class, VenueMapperImpl.class, TeamMapperImpl.class, FixtureStatusMapperImpl.class})
 @AutoConfigureMockMvc
+@WireMockTest(httpPort = 9000)
 public class FixtureTest {
-
-    static final WireMockServer externalApi = new WireMockServer(wireMockConfig().port(9000));
 
     static final String ENDPOINT = "/api/fixtures";
     static final String EXTERNAL_ENDPOINT = "/fixtures";
@@ -60,14 +59,10 @@ public class FixtureTest {
 
     final ZonedDateTime date = ZonedDateTime.of(2026, 4, 18, 10, 0, 0, 0, ZoneId.systemDefault());
 
-    @BeforeAll
-    static void setUp() {
-        externalApi.start();
-    }
-
-    @AfterAll
-    static void tearDown() {
-        externalApi.stop();
+    @AfterEach
+    void clear() {
+        Optional.ofNullable(cacheManager.getCache("fixtures"))
+                .ifPresent(Cache::clear);
     }
 
     @Test
@@ -78,30 +73,27 @@ public class FixtureTest {
         filters.setLeague(1);
         filters.setSeason(1970);
 
-        Resource res = resourceLoader.getResource("classpath:__files/get-fixture-api-response.json");
+        Resource res = resourceLoader.getResource("classpath:__files/get_all/get-fixture-api-response.json");
         String expectedJson = res.getContentAsString(Charset.defaultCharset());
 
-        externalApi.addStubMapping(
-                get(urlPathEqualTo(EXTERNAL_ENDPOINT))
-                        .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date)))
-                        .withQueryParam("league", equalTo("1"))
-                        .withQueryParam("season", equalTo("1970"))
-                        .willReturn(
-                                aResponse()
-                                        .withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
-                                        .withBodyFile("get-fixture-external-api-response.json")
-                        )
-                        .build()
-        );
+        stubFor(get(urlPathEqualTo(EXTERNAL_ENDPOINT))
+                .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date)))
+                .withQueryParam("league", equalTo("1"))
+                .withQueryParam("season", equalTo("1970"))
+                .willReturn(
+                        aResponse()
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
+                                .withBodyFile("get_all/get-fixture-external-api-response.json")
+                ));
 
         mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(ENDPOINT)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .queryParam("date", DateUtil.getSimpleDate(date))
-                    .queryParam("league", filters.getLeague().toString())
-                    .queryParam("season", filters.getSeason().toString())
-        )
+                        MockMvcRequestBuilders
+                                .get(ENDPOINT)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .queryParam("date", DateUtil.getSimpleDate(date))
+                                .queryParam("league", filters.getLeague().toString())
+                                .queryParam("season", filters.getSeason().toString())
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedJson));
 
@@ -115,20 +107,18 @@ public class FixtureTest {
         filters.setLeague(1);
         filters.setSeason(1970);
 
-        Resource res = resourceLoader.getResource("classpath:__files/get-fixture-api-error.json");
+        Resource res = resourceLoader.getResource("classpath:__files/get_all/get-fixture-api-error.json");
         String expectedJson = res.getContentAsString(Charset.defaultCharset());
 
-        externalApi.addStubMapping(
-                get(urlPathEqualTo(EXTERNAL_ENDPOINT))
-                        .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date.plusDays(1))))
-                        .withQueryParam("league", equalTo("1"))
-                        .withQueryParam("season", equalTo("1970"))
-                        .willReturn(
-                                aResponse()
-                                        .withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
-                                        .withBodyFile("get-fixture-external-api-error.json")
-                        )
-                        .build()
+        stubFor(get(urlPathEqualTo(EXTERNAL_ENDPOINT))
+                .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date.plusDays(1))))
+                .withQueryParam("league", equalTo("1"))
+                .withQueryParam("season", equalTo("1970"))
+                .willReturn(
+                        aResponse()
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
+                                .withBodyFile("get_all/get-fixture-external-api-error.json")
+                )
         );
 
         mockMvc.perform(
@@ -151,10 +141,10 @@ public class FixtureTest {
         filters.setLeague(1);
         filters.setSeason(1970);
 
-        Resource res = resourceLoader.getResource("classpath:__files/get-fixture-api-response.json");
+        Resource res = resourceLoader.getResource("classpath:__files/get_all/get-fixture-api-response.json");
         String expectedJson = res.getContentAsString(Charset.defaultCharset());
 
-        externalApi.addStubMapping(
+        stubFor(
                 get(urlPathEqualTo(EXTERNAL_ENDPOINT))
                         .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date)))
                         .withQueryParam("league", equalTo("1"))
@@ -162,9 +152,8 @@ public class FixtureTest {
                         .willReturn(
                                 aResponse()
                                         .withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
-                                        .withBodyFile("get-fixture-external-api-response.json")
+                                        .withBodyFile("get_all/get-fixture-external-api-response.json")
                         )
-                        .build()
         );
 
         mockMvc.perform(
@@ -178,22 +167,10 @@ public class FixtureTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedJson));
 
-        // eliminamos el stubmapping no deberia llamar a la api
-        externalApi.removeStubMapping(
-                get(urlPathEqualTo(EXTERNAL_ENDPOINT))
-                .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date)))
-                .withQueryParam("league", equalTo("1"))
-                .withQueryParam("season", equalTo("1970"))
-                .willReturn(
-                        aResponse()
-                                .withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
-                                .withBodyFile("get-fixture-external-api-response.json")
-                )
-                .build());
-
-        Optional<Cache> cachedResult = Optional.ofNullable(cacheManager.getCache(String.format("{%s, %s}", DateUtil.getSimpleDate(date), filters)));
-        assertTrue(cachedResult.isPresent());
-
+        Cache cache = cacheManager.getCache("fixtures");
+        assertNotNull(cache);
+        var savedCache = cache.get(List.of(filters.getDate(), filters));
+        assertNotNull(savedCache);
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .get(ENDPOINT)
@@ -213,14 +190,13 @@ public class FixtureTest {
         var filters = new FixtureFilters();
         filters.setDate(DateUtil.getSimpleDate(date.plusDays(2)));
 
-        externalApi.addStubMapping(
+        stubFor(
                 get(urlPathEqualTo(EXTERNAL_ENDPOINT))
                         .withQueryParam("date", equalTo(DateUtil.getSimpleDate(date.plusDays(2))))
                         .willReturn(
                                 aResponse()
                                         .withStatus(400)
                         )
-                        .build()
         );
 
         mockMvc.perform(
