@@ -2,15 +2,14 @@ package com.bytecodes.client;
 
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.validation.annotation.Validated;
 
 @Getter
 @Setter
+
 public class TeamFilter {
     @NotNull(message = "El ID de la liga es obligatorio ")
     @Min(value = 1, message = "Coloca el ID de la Liga. Ejm 61")
@@ -19,7 +18,6 @@ public class TeamFilter {
     @Range(min = 2022, max = 2024, message = "Sólo se puede las temporadas del 2022 al 2024.")
     private Integer season;
     @Min(value = 1,message = "Coloca el ID del equipo. Ejm 541")
-
     private Integer id;
 
     public static TeamFilter byId(Integer id) {
