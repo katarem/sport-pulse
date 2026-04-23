@@ -9,6 +9,7 @@ import com.bytecodes.mapper.FixtureMapper;
 import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.mapper.TeamMapper;
 import com.bytecodes.model.Fixture;
+import com.bytecodes.model.LiveFixture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -42,10 +43,37 @@ public class FixtureServiceImpl implements FixtureService {
             throw new ExternalApiException(response.getErrors());
 
         return response.getResponse().stream()
-                .map(this::processFixtures).collect(Collectors.toSet());
+                .map(this::processFixture).collect(Collectors.toSet());
     }
 
-    private Fixture processFixtures(FixtureWrapperDTO fixtureWrapperDTO) {
+    @Override
+    @Cacheable(value = "fixtures")
+    public Set<LiveFixture> getLiveFixtures() {
+
+        var filters = new FixtureQueryFilters();
+        filters.setLive("all");
+        filters.setStatus("1H-HT-2H");
+
+        var response = client.getFixtures(filters);
+
+        if (!(response.getErrors() instanceof List<?>))
+            throw new ExternalApiException(response.getErrors());
+
+        return response.getResponse().stream()
+                .map(this::processLiveFixture).collect(Collectors.toSet());
+    }
+
+    private LiveFixture processLiveFixture(FixtureWrapperDTO wrapperDTO) {
+
+        var fixture = processFixture(wrapperDTO);
+        var liveFixture = fixtureMapper.mapToLive(fixture);
+
+        liveFixture.setElapsed(wrapperDTO.getFixture().getStatus().getElapsed());
+
+        return liveFixture;
+    }
+
+    private Fixture processFixture(FixtureWrapperDTO fixtureWrapperDTO) {
 
         var fixture = fixtureMapper.toModel(fixtureWrapperDTO.getFixture());
 

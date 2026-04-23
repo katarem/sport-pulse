@@ -1,0 +1,241 @@
+{
+  "get": "fixtures",
+  "parameters": {
+    "live": "all",
+    "status": "1H-HT-2H"
+  },
+  "errors": [],
+  "results": 1,
+  "paging": {
+    "current": 1,
+    "total": 1
+  },
+  "response": [
+    {
+      "fixture": {
+        "id": 1519332,
+        "referee": "Anthony Diaz, Ecuador",
+        "timezone": "UTC",
+        "date": "2026-04-22T16:00:00+00:00",
+        "timestamp": 1776873600,
+        "periods": {
+          "first": 1776873600,
+          "second": 1776877200
+        },
+        "venue": {
+          "id": 2683,
+          "name": "Estadio Olimpico de Ibarra",
+          "city": "Ibarra"
+        },
+        "status": {
+          "long": "Second Half",
+          "short": "2H",
+          "elapsed": 54,
+          "extra": null
+        }
+      },
+      "league": {
+        "id": 242,
+        "name": "Liga Pro",
+        "country": "Ecuador",
+        "logo": "https://media.api-sports.io/football/leagues/242.png",
+        "flag": "https://media.api-sports.io/flags/ec.svg",
+        "season": 2026,
+        "round": "Regular Season - 10",
+        "standings": true
+      },
+      "teams": {
+        "home": {
+          "id": 19034,
+          "name": "Leones del Norte",
+          "logo": "https://media.api-sports.io/football/teams/19034.png",
+          "winner": true
+        },
+        "away": {
+          "id": 1980,
+          "name": "Manta FC",
+          "logo": "https://media.api-sports.io/football/teams/1980.png",
+          "winner": false
+        }
+      },
+      "goals": {
+        "home": 3,
+        "away": 0
+      },
+      "score": {
+        "halftime": {
+          "home": 2,
+          "away": 0
+        },
+        "fulltime": {
+          "home": null,
+          "away": null
+        },
+        "extratime": {
+          "home": null,
+          "away": null
+        },
+        "penalty": {
+          "home": null,
+          "away": null
+        }
+      },
+      "events": [
+        {
+          "time": {
+            "elapsed": 16,
+            "extra": null
+          },
+          "team": {
+            "id": 19034,
+            "name": "Leones del Norte",
+            "logo": "https://media.api-sports.io/football/teams/19034.png"
+          },
+          "player": {
+            "id": 642732,
+            "name": "J. Anangono"
+          },
+          "assist": {
+            "id": 311542,
+            "name": "M. De La Cruz"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 30,
+            "extra": null
+          },
+          "team": {
+            "id": 19034,
+            "name": "Leones del Norte",
+            "logo": "https://media.api-sports.io/football/teams/19034.png"
+          },
+          "player": {
+            "id": 642732,
+            "name": "J. Anangono"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Goal",
+          "detail": "Penalty",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 42,
+            "extra": null
+          },
+          "team": {
+            "id": 1980,
+            "name": "Manta FC",
+            "logo": "https://media.api-sports.io/football/teams/1980.png"
+          },
+          "player": {
+            "id": 311359,
+            "name": "O. Moscarelli"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 45,
+            "extra": 1
+          },
+          "team": {
+            "id": 19034,
+            "name": "Leones del Norte",
+            "logo": "https://media.api-sports.io/football/teams/19034.png"
+          },
+          "player": {
+            "id": 16730,
+            "name": "C. Velez"
+          },
+          "assist": {
+            "id": null,
+            "name": null
+          },
+          "type": "Card",
+          "detail": "Yellow Card",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 1980,
+            "name": "Manta FC",
+            "logo": "https://media.api-sports.io/football/teams/1980.png"
+          },
+          "player": {
+            "id": 311529,
+            "name": "J. Mina"
+          },
+          "assist": {
+            "id": 541014,
+            "name": "A. Medina"
+          },
+          "type": "subst",
+          "detail": "Substitution 1",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 46,
+            "extra": null
+          },
+          "team": {
+            "id": 1980,
+            "name": "Manta FC",
+            "logo": "https://media.api-sports.io/football/teams/1980.png"
+          },
+          "player": {
+            "id": 313064,
+            "name": "B. Ramirez"
+          },
+          "assist": {
+            "id": 653942,
+            "name": "J. Troya"
+          },
+          "type": "subst",
+          "detail": "Substitution 2",
+          "comments": null
+        },
+        {
+          "time": {
+            "elapsed": 48,
+            "extra": null
+          },
+          "team": {
+            "id": 19034,
+            "name": "Leones del Norte",
+            "logo": "https://media.api-sports.io/football/teams/19034.png"
+          },
+          "player": {
+            "id": 81334,
+            "name": "C. Solano"
+          },
+          "assist": {
+            "id": 613329,
+            "name": "S. Micolta"
+          },
+          "type": "Goal",
+          "detail": "Normal Goal",
+          "comments": null
+        }
+      ]
+    }
+  ]
+}
