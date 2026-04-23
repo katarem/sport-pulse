@@ -65,6 +65,7 @@ public class FixtureServiceImpl implements FixtureService {
     }
 
     @Override
+    @Cacheable(value = "fixtures", key = "#fixtureId")
     public Set<FixtureEvent> getFixtureEvents(Long fixtureId) {
         FixtureApiResponse<Set<FixtureEventDTO>> response = client.getFixtureEvents(fixtureId);
 
