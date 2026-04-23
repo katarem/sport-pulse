@@ -1,0 +1,73 @@
+package com.bytecodes.service;
+
+import com.bytecodes.client.FixtureClient;
+import com.bytecodes.client.FixtureQueryFilters;
+import com.bytecodes.dto.external.FixtureWrapperDTO;
+import com.bytecodes.dto.request.FixtureFilters;
+import com.bytecodes.exception.ExternalApiException;
+import com.bytecodes.mapper.FixtureMapper;
+import com.bytecodes.mapper.LeagueMapper;
+import com.bytecodes.mapper.TeamMapper;
+import com.bytecodes.model.Fixture;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class FixtureServiceImpl implements FixtureService {
+
+    private final FixtureClient client;
+    private final FixtureMapper fixtureMapper;
+    private final TeamMapper teamMapper;
+    private final LeagueMapper leagueMapper;
+
+    @Override
+    @Cacheable(value = "fixtures", key = "{#filters.date, #filters}")
+    public Set<Fixture> getFixtures(FixtureFilters filters) {
+        log.info("Getting the result");
+        FixtureQueryFilters clientFilters = fixtureMapper.toClientFilters(filters);
+
+        var response = client.getFixtures(clientFilters);
+        // La api siempre devuelve el campo errors como array si no tiene errores
+        // así que esta es la solución más rápida y limpia que se me ha ocurrido
+        if (!(response.getErrors() instanceof List<?>))
+            throw new ExternalApiException(response.getErrors());
+
+        return response.getResponse().stream()
+                .map(this::processFixtures).collect(Collectors.toSet());
+    }
+
+    private Fixture processFixtures(FixtureWrapperDTO fixtureWrapperDTO) {
+
+        var fixture = fixtureMapper.toModel(fixtureWrapperDTO.getFixture());
+
+        var homeTeamDTO = fixtureWrapperDTO.getTeams().getOrDefault("home", null);
+        var awayTeamDTO = fixtureWrapperDTO.getTeams().getOrDefault("away", null);
+
+        if (Objects.nonNull(homeTeamDTO)) {
+            fixture.setHomeTeam(teamMapper.toModel(homeTeamDTO));
+            fixture.getHomeTeam().setGoals(fixtureWrapperDTO.getGoals().getOrDefault("home", null));
+        }
+
+        if (Objects.nonNull(awayTeamDTO)) {
+            fixture.setAwayTeam(teamMapper.toModel(awayTeamDTO));
+            fixture.getAwayTeam().setGoals(fixtureWrapperDTO.getGoals().getOrDefault("away", null));
+        }
+
+        if (Objects.nonNull(fixtureWrapperDTO.getLeague())) {
+            var league = leagueMapper.mapToModel(fixtureWrapperDTO.getLeague());
+            fixture.setLeague(league);
+        }
+
+        return fixture;
+    }
+
+}

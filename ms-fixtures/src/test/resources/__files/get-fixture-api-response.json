@@ -1,0 +1,31 @@
+[
+  {
+    "id": 1402529,
+    "date": "2026-04-21T18:45:00Z",
+    "status": {
+      "short": "NS",
+      "long": "Not Started"
+    },
+    "homeTeam": {
+      "id": 1380,
+      "name": "Macclesfield",
+      "logo": "https://media.api-sports.io/football/teams/1380.png",
+      "goals": null
+    },
+    "awayTeam": {
+      "id": 1826,
+      "name": "Southport",
+      "logo": "https://media.api-sports.io/football/teams/1826.png",
+      "goals": null
+    },
+    "league": {
+      "id": 50,
+      "name": "National League - North",
+      "round": "North - 41"
+    },
+    "venue": {
+      "name": "The Leasing.com Stadium",
+      "city": "Macclesfield, Cheshire"
+    }
+  }
+]
