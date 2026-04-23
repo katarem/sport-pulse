@@ -1,0 +1,201 @@
+{
+  "info": {
+    "_postman_id": "df94cf3c-4157-4629-83b0-dc7653bc55a9",
+    "name": "ms-leagues",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42119428"
+  },
+  "item": [
+    {
+      "name": "Get All Leagues",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('array');\r",
+              "});\r",
+              "pm.test(\"Each league has required properties\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "\r",
+              "    json.forEach(league => {\r",
+              "        pm.expect(league).to.have.property('id');\r",
+              "        pm.expect(league).to.have.property('name');\r",
+              "        pm.expect(league).to.have.property('type');\r",
+              "        pm.expect(league).to.have.property('country');\r",
+              "        pm.expect(league).to.have.property('logo');\r",
+              "        pm.expect(league).to.have.property('currentSeason');\r",
+              "        pm.expect(league).to.have.property('startDate');\r",
+              "        pm.expect(league).to.have.property('endDate');\r",
+              "    });\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Leagues Season Wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('error');\r",
+              "    pm.expect(json).to.have.property('message');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.message).to.eql(\"Sólo se puede las temporadas del 2022 al 2024\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}?season=22222",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": "22222"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Leagues Country Wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('error');\r",
+              "    pm.expect(json).to.have.property('message');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.message).to.eql(\"Minimo cuatro caracteres y en inglés, Ej. Spain\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}?country",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "query": [
+            {
+              "key": "country",
+              "value": null,
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get League ById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}?season=2024",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": "2024"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "LEAGUES_BASE_URL",
+      "value": ""
+    }
+  ]
+}
