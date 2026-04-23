@@ -40,7 +40,8 @@ public class LeagueServiceImpl implements LeagueService {
                     dto.setEndDate(helper.findCurrentSeasonEnd(wrapper.seasons()));
 
                     return dto;
-                })
+                    // Aqui hacemos un filtro para quitar los objetos null en currentSeason
+                }).filter(dto -> dto.getCurrentSeason() != null)
                 .toList();
     }
 
