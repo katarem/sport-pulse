@@ -72,9 +72,15 @@ public class FixtureServiceImpl implements FixtureService {
         ApiUtil.checkError(response);
 
         return response.getResponse().stream()
-                .map(fixtureEventMapper::toModel).collect(Collectors.toSet());
+                .map(this::processFixtureEvent).collect(Collectors.toSet());
     }
 
+    private FixtureEvent processFixtureEvent(FixtureEventDTO dto){
+        var event = fixtureEventMapper.toModel(dto);
+        if(Objects.isNull(dto.getAssist().getId()))
+            event.setAssist(null);
+        return event;
+    }
 
 
     private LiveFixture processLiveFixture(FixtureWrapperDTO wrapperDTO) {
