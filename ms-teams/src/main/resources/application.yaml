@@ -6,7 +6,7 @@ server:
   port: 8083
 api:
   football:
-    key: ${API_FOOTBALL_KEY}
-    url: ${API_FOOTBALL_URL}
+    key: ${FOOTBALL_API_KEY}
+    url: ${FOOTBALL_API_URL}
 
 
