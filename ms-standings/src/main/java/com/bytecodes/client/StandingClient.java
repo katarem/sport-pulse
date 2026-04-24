@@ -1,7 +1,7 @@
 package com.bytecodes.client;
 
 import com.bytecodes.config.StandingConfig;
-import com.bytecodes.dto.external.ApiResponseDTO;
+import com.bytecodes.dto.external.ApiStandingResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface StandingClient {
 
     @GetMapping("standings")
-    ApiResponseDTO getStanding(
+    ApiStandingResponseDTO getStanding(
             @Valid @SpringQueryMap StandingFilter filter
     );
 }
