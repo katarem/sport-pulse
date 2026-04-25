@@ -192,7 +192,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{FIXTURES_BASE_URL}}/api/fixtures?league=39&season=2025",
+          "raw": "{{FIXTURES_BASE_URL}}/api/fixtures?league=39&season=2024",
           "host": [
             "{{FIXTURES_BASE_URL}}"
           ],
@@ -207,7 +207,7 @@
             },
             {
               "key": "season",
-              "value": "2025"
+              "value": "2024"
             }
           ]
         }
@@ -332,8 +332,8 @@
               "    pm.expect(pm.response.json()).to.be.an('object');",
               "    const body = pm.response.json();",
               "    pm.expect(body.code).to.equal('FIELD_ERRORS');",
-              "    pm.expect(body.errors).to.haveOwnProperty('fixtureFilters')",
-              "    pm.expect(body.errors.plan).to.include('Free plans do not have access to this date');",
+              "    pm.expect(body.errors).to.haveOwnProperty('date')",
+              "    pm.expect(body.errors.date).to.include('La fecha solo puede darse en formato yyyy-MM-dd');",
               "",
               "})"
             ],
