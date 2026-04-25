@@ -37,7 +37,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_INTERNAL_SERVICE");
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(token, null, Collections.singletonList(grantedAuthority));
