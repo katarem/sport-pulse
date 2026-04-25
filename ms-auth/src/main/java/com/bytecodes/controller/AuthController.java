@@ -1,4 +1,4 @@
-package com.bytecodes;
+package com.bytecodes.controller;
 
 import com.bytecodes.entity.CreateUser;
 import com.bytecodes.entity.ValidationUser;
