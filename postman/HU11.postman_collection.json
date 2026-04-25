@@ -1,0 +1,176 @@
+{
+  "info": {
+    "_postman_id": "452dcb48-76fc-418d-801e-21cd94c9d2fd",
+    "name": "HU11",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "Get League ById",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is an array\", function () {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json).to.be.an('object');",
+              "});",
+              "pm.test(\"League has required properties\", function () {",
+              "    const league = pm.response.json();",
+              "",
+              "    pm.expect(league).to.have.property('id');",
+              "    pm.expect(league).to.have.property('name');",
+              "    pm.expect(league).to.have.property('type');",
+              "    pm.expect(league).to.have.property('country');",
+              "    pm.expect(league).to.have.property('logo');",
+              "    pm.expect(league).to.have.property('currentSeason');",
+              "    if(league.currentSeason !== null) {",
+              "        pm.expect(league.currentSeason).to.have.property('startDate');",
+              "        pm.expect(league.currentSeason).to.have.property('endDate');",
+              "        pm.expect(league.currentSeason).to.have.property('year');",
+              "        pm.expect(league.currentSeason).to.have.property('current');",
+              "    }",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/api/leagues/:leagueId",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "leagues",
+            ":leagueId"
+          ],
+          "variable": [
+            {
+              "key": "leagueId",
+              "value": "{{LEAGUE_ID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get League wrong id format",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.errors).to.have.property('leagueId');\r",
+              "    pm.expect(json.errors.leagueId).to.eql('El Parametro introducido no es un numero, validelo e intente de nuevo');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/api/leagues/:leagueId",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "leagues",
+            ":leagueId"
+          ],
+          "variable": [
+            {
+              "key": "leagueId",
+              "value": "Liga Española"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get League By Id not found",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.errors).to.include.all.keys('teamId');\r",
+              "    pm.expect(json.errors.teamId).to.be.deep.eq('No existe una liga con el ID proporcionado');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/api/leagues/:leagueId",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "leagues",
+            ":leagueId"
+          ],
+          "variable": [
+            {
+              "key": "leagueId",
+              "value": "1200000"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

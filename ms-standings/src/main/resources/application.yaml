@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: ms-standings
+api:
+  football:
+    url: ${FOOTBALL_API_URL}
+    key: ${FOOTBALL_API_KEY}
   management:
     endpoints:
       web:
