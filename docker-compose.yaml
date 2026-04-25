@@ -16,7 +16,7 @@ services:
   ms-auth:
     build: ./ms-auth
     ports:
-      - "8081:8081"
+      - "8081:8080"
     depends_on:
       - postgres-auth
     environment:
@@ -38,34 +38,34 @@ services:
   ms-leagues:
     build: ./ms-leagues
     ports:
-      - "8082:8082"
+      - "8082:8080"
     environment:
-      RAPIDAPI_KEY: ${RAPIDAPI_KEY}
+      FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
       JWT_SECRET: sportpulse-secret-key-2025
 
   ms-teams:
     build: ./ms-teams
     ports:
-      - "8083:8083"
+      - "8083:8080"
     environment:
-      RAPIDAPI_KEY: ${RAPIDAPI_KEY}
+      FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
       JWT_SECRET: sportpulse-secret-key-2025
 
   ms-fixtures:
     build: ./ms-fixtures
     ports:
-      - "8085:8085"
+      - "8085:8080"
     environment:
-      RAPIDAPI_KEY: ${RAPIDAPI_KEY}
+      FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
       JWT_SECRET: sportpulse-secret-key-2025
       TEAMS_SERVICE_URL: http://ms-teams:8083
 
   ms-standings:
     build: ./ms-standings
     ports:
-      - "8086:8086"
+      - "8086:8080"
     environment:
-      RAPIDAPI_KEY: ${RAPIDAPI_KEY}
+      FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
       JWT_SECRET: sportpulse-secret-key-2025
       TEAMS_SERVICE_URL: http://ms-teams:8083
 
@@ -81,7 +81,7 @@ services:
   ms-notifications:
     build: ./ms-notifications
     ports:
-      - "8088:8088"
+      - "8088:8080"
     depends_on:
       - postgres-notifications
       - ms-fixtures
@@ -95,7 +95,7 @@ services:
   ms-dashboard:
     build: ./ms-dashboard
     ports:
-      - "8089:8089"
+      - "8089:8080"
     depends_on:
       - ms-fixtures
       - ms-standings
