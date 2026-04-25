@@ -1,5 +1,18 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: ms-auth
-server:
-  port: 8081
+
+  autoconfigure:
+    exclude: |
+      org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,
+      org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,
+      org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration,
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
