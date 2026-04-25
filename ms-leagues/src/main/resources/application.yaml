@@ -1,10 +1,14 @@
 spring:
   application:
     name: ms-leagues
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health
 server:
   port: 8082
 api:
   football:
     url: ${API_FOOTBALL_URL}
     key: ${API_FOOTBALL_KEY}
-

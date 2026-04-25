@@ -9,4 +9,5 @@ public class FixtureStatusDTO {
     private String fixtureShort;
     @JsonProperty("long")
     private String fixtureLong;
+    private Long elapsed;
 }

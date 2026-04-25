@@ -1,0 +1,300 @@
+{
+  "get": "fixtures/events",
+  "parameters": {
+    "fixture": "1489178"
+  },
+  "errors": [],
+  "results": 13,
+  "paging": {
+    "current": 1,
+    "total": 1
+  },
+  "response": [
+    {
+      "time": {
+        "elapsed": 41,
+        "extra": null
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 270486,
+        "name": "R. Rodriguez"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 51,
+        "extra": null
+      },
+      "team": {
+        "id": 815,
+        "name": "CS Herediano",
+        "logo": "https://media.api-sports.io/football/teams/815.png"
+      },
+      "player": {
+        "id": 27623,
+        "name": "G. Montes"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 56,
+        "extra": null
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 14213,
+        "name": "J. Canales"
+      },
+      "assist": {
+        "id": 656767,
+        "name": "D. Christopher"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 56,
+        "extra": null
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 560327,
+        "name": "M. Pereira"
+      },
+      "assist": {
+        "id": 475959,
+        "name": "A. Fallas"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 62,
+        "extra": null
+      },
+      "team": {
+        "id": 815,
+        "name": "CS Herediano",
+        "logo": "https://media.api-sports.io/football/teams/815.png"
+      },
+      "player": {
+        "id": 404115,
+        "name": "E. Bravo"
+      },
+      "assist": {
+        "id": 2839,
+        "name": "R. Araya"
+      },
+      "type": "subst",
+      "detail": "Substitution 1",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 66,
+        "extra": null
+      },
+      "team": {
+        "id": 815,
+        "name": "CS Herediano",
+        "logo": "https://media.api-sports.io/football/teams/815.png"
+      },
+      "player": {
+        "id": 27623,
+        "name": "G. Montes"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Goal",
+      "detail": "Normal Goal",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 78,
+        "extra": null
+      },
+      "team": {
+        "id": 815,
+        "name": "CS Herediano",
+        "logo": "https://media.api-sports.io/football/teams/815.png"
+      },
+      "player": {
+        "id": 599468,
+        "name": "G. Sibaja"
+      },
+      "assist": {
+        "id": 2842,
+        "name": "R. Leal"
+      },
+      "type": "subst",
+      "detail": "Substitution 2",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 78,
+        "extra": null
+      },
+      "team": {
+        "id": 815,
+        "name": "CS Herediano",
+        "logo": "https://media.api-sports.io/football/teams/815.png"
+      },
+      "player": {
+        "id": 14021,
+        "name": "J. Montenegro"
+      },
+      "assist": {
+        "id": 628817,
+        "name": "K. Estrada"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 81,
+        "extra": null
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 633967,
+        "name": "E. Drummond"
+      },
+      "assist": {
+        "id": 541220,
+        "name": "J. Aguirre"
+      },
+      "type": "subst",
+      "detail": "Substitution 3",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 81,
+        "extra": null
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 541218,
+        "name": "A. Porras"
+      },
+      "assist": {
+        "id": 657445,
+        "name": "F. Morera"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 3
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 57745,
+        "name": "M. Moran"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 4
+      },
+      "team": {
+        "id": 815,
+        "name": "CS Herediano",
+        "logo": "https://media.api-sports.io/football/teams/815.png"
+      },
+      "player": {
+        "id": 2838,
+        "name": "E. Aguilar"
+      },
+      "assist": {
+        "id": 606805,
+        "name": "S. Vargas"
+      },
+      "type": "subst",
+      "detail": "Substitution 4",
+      "comments": null
+    },
+    {
+      "time": {
+        "elapsed": 90,
+        "extra": 6
+      },
+      "team": {
+        "id": 819,
+        "name": "Perez Zeledon",
+        "logo": "https://media.api-sports.io/football/teams/819.png"
+      },
+      "player": {
+        "id": 13876,
+        "name": "L. Hernandez"
+      },
+      "assist": {
+        "id": null,
+        "name": null
+      },
+      "type": "Card",
+      "detail": "Yellow Card",
+      "comments": null
+    }
+  ]
+}

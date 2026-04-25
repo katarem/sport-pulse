@@ -1,7 +1,3 @@
-spring:
-  application:
-    name: ms-fixtures
-
 api:
   football:
     url: https://v3.football.api-sports.io
@@ -9,3 +5,12 @@ api:
 
 server:
   port: 8085
+
+spring:
+  application:
+    name: ms-fixtures
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health

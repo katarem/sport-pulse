@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1519332,
+    "elapsed": 54,
+    "date": "2026-04-22T16:00:00Z",
+    "status": {
+      "short": "2H",
+      "long": "Second Half"
+    },
+    "homeTeam": {
+      "id": 19034,
+      "name": "Leones del Norte",
+      "logo": "https://media.api-sports.io/football/teams/19034.png",
+      "goals": 3
+    },
+    "awayTeam": {
+      "id": 1980,
+      "name": "Manta FC",
+      "logo": "https://media.api-sports.io/football/teams/1980.png",
+      "goals": 0
+    },
+    "league": {
+      "id": 242,
+      "name": "Liga Pro",
+      "round": "Regular Season - 10"
+    },
+    "venue": {
+      "name": "Estadio Olimpico de Ibarra",
+      "city": "Ibarra"
+    }
+  }
+]

@@ -1,0 +1,182 @@
+{
+  "info": {
+    "_postman_id": "edb301e2-10e8-48fa-a3a5-2707dcd95dde",
+    "name": "HU13",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "Response Teams",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Team has required properties\", function () {\r",
+              "    const team = pm.response.json();\r",
+              "    pm.expect(team).to.have.property('id');\r",
+              "    pm.expect(team).to.have.property('name');\r",
+              "    pm.expect(team).to.have.property('country');\r",
+              "    pm.expect(team).to.have.property('logo');\r",
+              "    pm.expect(team).to.have.property('founded');\r",
+              "    pm.expect(team).to.have.property('national');\r",
+              "    pm.expect(team).to.have.property('stadium');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Stadium structure is correct\", function () {\r",
+              "    const team = pm.response.json();\r",
+              "\r",
+              "    const stadium = team.stadium;\r",
+              "    pm.expect(stadium).to.have.property('name');\r",
+              "    pm.expect(stadium).to.have.property('address');\r",
+              "    pm.expect(stadium).to.have.property('city');\r",
+              "    pm.expect(stadium).to.have.property('capacity');\r",
+              "    pm.expect(stadium).to.have.property('surface');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{TEAMS_BASE_URL}}/api/teams/:teamId",
+          "host": [
+            "{{TEAMS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "teams",
+            ":teamId"
+          ],
+          "variable": [
+            {
+              "key": "teamId",
+              "value": "{{TEAM_ID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ID wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.errors).to.have.property('teamId');\r",
+              "    pm.expect(json.errors.teamId).to.include(\"El Parametro introducido no es un numero\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{TEAMS_BASE_URL}}/api/teams/:teamId",
+          "host": [
+            "{{TEAMS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "teams",
+            ":teamId"
+          ],
+          "variable": [
+            {
+              "key": "teamId",
+              "value": "FC Barcelona"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ID does not exist",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.code).to.eql(\"TEAM_NOT_FOUND\");\r",
+              "    pm.expect(json.errors).to.have.property('teamId');\r",
+              "    pm.expect(json.errors.teamId).to.include(\"No existe un equipo con el ID proporcionado\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{TEAMS_BASE_URL}}/api/teams/:teamId",
+          "host": [
+            "{{TEAMS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "teams",
+            ":teamId"
+          ],
+          "variable": [
+            {
+              "key": "teamId",
+              "value": "100000000"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

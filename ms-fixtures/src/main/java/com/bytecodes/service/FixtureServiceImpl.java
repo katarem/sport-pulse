@@ -2,19 +2,23 @@ package com.bytecodes.service;
 
 import com.bytecodes.client.FixtureClient;
 import com.bytecodes.client.FixtureQueryFilters;
+import com.bytecodes.dto.external.FixtureEventDTO;
 import com.bytecodes.dto.external.FixtureWrapperDTO;
 import com.bytecodes.dto.request.FixtureFilters;
-import com.bytecodes.exception.ExternalApiException;
+import com.bytecodes.dto.response.FixtureApiResponse;
+import com.bytecodes.mapper.FixtureEventMapper;
 import com.bytecodes.mapper.FixtureMapper;
 import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.mapper.TeamMapper;
 import com.bytecodes.model.Fixture;
+import com.bytecodes.model.FixtureEvent;
+import com.bytecodes.model.LiveFixture;
+import com.bytecodes.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +30,7 @@ public class FixtureServiceImpl implements FixtureService {
 
     private final FixtureClient client;
     private final FixtureMapper fixtureMapper;
+    private final FixtureEventMapper fixtureEventMapper;
     private final TeamMapper teamMapper;
     private final LeagueMapper leagueMapper;
 
@@ -36,16 +41,59 @@ public class FixtureServiceImpl implements FixtureService {
         FixtureQueryFilters clientFilters = fixtureMapper.toClientFilters(filters);
 
         var response = client.getFixtures(clientFilters);
-        // La api siempre devuelve el campo errors como array si no tiene errores
-        // así que esta es la solución más rápida y limpia que se me ha ocurrido
-        if (!(response.getErrors() instanceof List<?>))
-            throw new ExternalApiException(response.getErrors());
+
+        ApiUtil.checkError(response);
 
         return response.getResponse().stream()
-                .map(this::processFixtures).collect(Collectors.toSet());
+                .map(this::processFixture).collect(Collectors.toSet());
     }
 
-    private Fixture processFixtures(FixtureWrapperDTO fixtureWrapperDTO) {
+    @Override
+    @Cacheable(value = "fixtures")
+    public Set<LiveFixture> getLiveFixtures() {
+
+        var filters = new FixtureQueryFilters();
+        filters.setLive("all");
+        filters.setStatus("1H-HT-2H");
+
+        var response = client.getFixtures(filters);
+
+        ApiUtil.checkError(response);
+
+        return response.getResponse().stream()
+                .map(this::processLiveFixture).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Cacheable(value = "fixtures", key = "#fixtureId")
+    public Set<FixtureEvent> getFixtureEvents(Long fixtureId) {
+        FixtureApiResponse<Set<FixtureEventDTO>> response = client.getFixtureEvents(fixtureId);
+
+        ApiUtil.checkError(response);
+
+        return response.getResponse().stream()
+                .map(this::processFixtureEvent).collect(Collectors.toSet());
+    }
+
+    private FixtureEvent processFixtureEvent(FixtureEventDTO dto){
+        var event = fixtureEventMapper.toModel(dto);
+        if(Objects.isNull(dto.getAssist().getId()))
+            event.setAssist(null);
+        return event;
+    }
+
+
+    private LiveFixture processLiveFixture(FixtureWrapperDTO wrapperDTO) {
+
+        var fixture = processFixture(wrapperDTO);
+        var liveFixture = fixtureMapper.mapToLive(fixture);
+
+        liveFixture.setElapsed(wrapperDTO.getFixture().getStatus().getElapsed());
+
+        return liveFixture;
+    }
+
+    private Fixture processFixture(FixtureWrapperDTO fixtureWrapperDTO) {
 
         var fixture = fixtureMapper.toModel(fixtureWrapperDTO.getFixture());
 

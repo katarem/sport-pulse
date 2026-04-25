@@ -1,0 +1,6 @@
+{
+  "code": "EXTERNAL_API_ERROR",
+  "errors": {
+    "fixture": "The Fixture field cannot exceed 10 characters in length."
+  }
+}
