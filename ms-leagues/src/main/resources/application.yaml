@@ -10,5 +10,5 @@ server:
   port: 8082
 api:
   football:
-    url: ${API_FOOTBALL_URL}
-    key: ${API_FOOTBALL_KEY}
+    url: ${FOOTBALL_API_URL}
+    key: ${FOOTBALL_API_KEY}

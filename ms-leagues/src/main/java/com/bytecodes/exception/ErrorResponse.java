@@ -1,10 +1,11 @@
 package com.bytecodes.exception;
 
 import java.time.Instant;
+import java.util.Map;
 
-public record ErrorResponse(String error, String message, Instant timestamp)
+public record ErrorResponse(String code, Map<String, ?> errors, Instant timestamp)
 {
-    public static ErrorResponse of(String error, String message) {
-        return new ErrorResponse(error, message, Instant.now());
+    public static ErrorResponse of(String code, Map<String, ?> errors) {
+        return new ErrorResponse(code, errors, Instant.now());
     }
 }
