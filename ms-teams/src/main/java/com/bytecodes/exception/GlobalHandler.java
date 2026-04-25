@@ -53,7 +53,7 @@ public class GlobalHandler {
     public ResponseEntity<ErrorResponse> handleInvalidParam(MethodArgumentTypeMismatchException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of("INVALID_REQUEST",
+                .body(ErrorResponse.of("FIELDS_ERROR",
                         Map.of(e.getPropertyName(), "El Parametro introducido no es un numero, validelo e intente de nuevo")));
     }
 }
