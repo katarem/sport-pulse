@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Range;
 @Setter
 
 public class TeamFilter {
-    @NotNull(message = "El ID de la liga es obligatorio ")
+    @NotNull(message = "El ID de la liga es obligatorio")
     @Min(value = 1, message = "Coloca el ID de la Liga. Ejm 61")
     private Integer league;
     @NotNull(message = "La temporada es obligatoria. Ejm 2024")

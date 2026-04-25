@@ -93,13 +93,15 @@
               "pm.test(\"Error response structure\", function () {\r",
               "    const json = pm.response.json();\r",
               "    pm.expect(json).to.be.an('object');\r",
-              "    pm.expect(json).to.have.property('error');\r",
-              "    pm.expect(json).to.have.property('message');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
               "    pm.expect(json).to.have.property('timestamp');\r",
               "});\r",
               "pm.test(\"Message content is correct\", function () {\r",
               "    const json = pm.response.json();\r",
-              "    pm.expect(json.message).to.eql(\"El ID de la liga es obligatorio \");\r",
+              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.errors).to.have.property('league');\r",
+              "    pm.expect(json.errors.league).to.eql(\"El ID de la liga es obligatorio\");\r",
               "});"
             ],
             "type": "text/javascript",
@@ -135,19 +137,8 @@
       "response": []
     },
     {
-      "name": "Season wrong",
+      "name": "Both Wrong",
       "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
         {
           "listen": "test",
           "script": {
@@ -158,20 +149,17 @@
               "pm.test(\"Error response structure\", function () {\r",
               "    const json = pm.response.json();\r",
               "    pm.expect(json).to.be.an('object');\r",
-              "    pm.expect(json).to.have.property('error');\r",
-              "    pm.expect(json).to.have.property('message');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
               "    pm.expect(json).to.have.property('timestamp');\r",
               "});\r",
               "pm.test(\"Message content is correct\", function () {\r",
               "    const json = pm.response.json();\r",
-              "    pm.expect(json.message).to.eql(\"Sólo se puede las temporadas del 2022 al 2024.\");\r",
-              "});\r",
-              "\r",
-              "\r",
-              " \r",
-              "\r",
-              "\r",
-              ""
+              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.errors).to.have.include.all.keys('league', 'season');\r",
+              "    pm.expect(json.errors.league).to.eql(\"El ID de la liga es obligatorio\");\r",
+              "    pm.expect(json.errors.season).to.eql(\"La temporada es obligatoria. Ejm 2024\");\r",
+              "});"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -183,7 +171,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{TEAMS_BASE_URL}}/api/teams?season=202&league=61",
+          "raw": "{{TEAMS_BASE_URL}}/api/teams?season=&league=",
           "host": [
             "{{TEAMS_BASE_URL}}"
           ],
@@ -194,7 +182,119 @@
           "query": [
             {
               "key": "season",
-              "value": "202"
+              "value": ""
+            },
+            {
+              "key": "league",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Season wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.errors).to.have.include.all.keys('season');\r",
+              "    pm.expect(json.errors.season).to.eql(\"La temporada es obligatoria. Ejm 2024\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{TEAMS_BASE_URL}}/api/teams?season=&league=61",
+          "host": [
+            "{{TEAMS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "teams"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": ""
+            },
+            {
+              "key": "league",
+              "value": "61"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Season wrong not a number",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('code');\r",
+              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.errors).to.have.include.all.keys('season');\r",
+              "    pm.expect(json.errors.season).to.include(\"Failed to convert property value of type 'java.lang.String' to required type 'java.lang.Integer' for property 'season'\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{TEAMS_BASE_URL}}/api/teams?season=Temporada 23&league=61",
+          "host": [
+            "{{TEAMS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "teams"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": "Temporada 23"
             },
             {
               "key": "league",
