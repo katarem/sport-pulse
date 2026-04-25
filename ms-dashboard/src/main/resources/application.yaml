@@ -1,5 +1,12 @@
+server:
+  port: 8089
+
 spring:
   application:
     name: ms-dashboard
-server:
-  port: 8089
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health

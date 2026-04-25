@@ -2,7 +2,6 @@ package com.bytecodes.exception;
 
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

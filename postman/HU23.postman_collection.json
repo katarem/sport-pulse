@@ -1,0 +1,318 @@
+{
+  "info": {
+    "_postman_id": "4dbdaf57-f2cf-416d-8b1f-fac6a748dc32",
+    "name": "HU23",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{AUTH_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{AUTH_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "dashboard",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{DASHBOARD_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{DASHBOARD_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "fixtures",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{FIXTURES_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{FIXTURES_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "leagues",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "notifications",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{NOTIFICATIONS_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{NOTIFICATIONS_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "standings",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{STANDINGS_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{STANDINGS_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "teams",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{TEAMS_BASE_URL}}/swagger-ui/index.html",
+          "host": [
+            "{{TEAMS_BASE_URL}}"
+          ],
+          "path": [
+            "swagger-ui",
+            "index.html"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

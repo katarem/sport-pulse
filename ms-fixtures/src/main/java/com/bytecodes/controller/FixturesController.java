@@ -1,5 +1,6 @@
 package com.bytecodes.controller;
 
+import com.bytecodes.model.FixtureEvent;
 import com.bytecodes.model.LiveFixture;
 import com.bytecodes.service.FixtureService;
 import com.bytecodes.dto.request.FixtureFilters;
@@ -8,6 +9,7 @@ import com.bytecodes.util.FilterUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,13 +24,16 @@ public class FixturesController {
 
     @GetMapping
     Set<Fixture> getFixtures(@Valid FixtureFilters filters) {
-        var fixtures = service.getFixtures(FilterUtil.resolveFilters(filters));
-        return fixtures;
+        return service.getFixtures(FilterUtil.resolveFilters(filters));
     }
 
     @GetMapping("/live")
     Set<LiveFixture> getLiveFixtures() {
-        var fixtures = service.getLiveFixtures();
-        return fixtures;
+        return service.getLiveFixtures();
+    }
+
+    @GetMapping("/{fixtureId}/events")
+    Set<FixtureEvent> getEvents(@PathVariable Long fixtureId){
+        return service.getFixtureEvents(fixtureId);
     }
 }
