@@ -1,5 +1,6 @@
 package com.bytecodes.filter;
 
+import com.bytecodes.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,7 +24,7 @@ import java.util.Objects;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtDecoder jwtDecoder;
+    private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = authHeader.substring(13);
 
-            Jwt jwt = jwtDecoder.decode(token);
+            Jwt jwt = jwtService.readToken(token);
 
             UserDetails user = userDetailsService.loadUserByUsername(jwt.getSubject());
 

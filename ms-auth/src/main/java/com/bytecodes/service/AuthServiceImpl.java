@@ -6,6 +6,7 @@ import com.bytecodes.entity.ValidationUser;
 import com.bytecodes.exception.InvalidCredentialsException;
 import com.bytecodes.mapper.UserMapper;
 import com.bytecodes.model.User;
+import com.bytecodes.model.UserToken;
 import com.bytecodes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Service
@@ -25,7 +26,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final JwtDecoder jwtDecoder;
+    private final JwtService jwtService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,23 +37,31 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
-    public User login(String email, String password) {
+    public UserToken login(String email, String password) {
 
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(InvalidCredentialsException::new);
 
-        String encodedPassword = passwordEncoder.encode(password);
-        if(!user.getPassword().equals(encodedPassword)) {
+        if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidCredentialsException();
         }
 
-        return userMapper.toModel(user);
+        Jwt jwt = jwtService.generateToken(user);
+
+        Duration expirationTime = Duration.between(Instant.now(),jwt.getExpiresAt());
+
+        return UserToken.builder()
+                .token(jwt.getTokenValue())
+                .tokenType("Bearer")
+                .userId(user.getId())
+                .expiresIn(expirationTime.toMillis())
+                .build();
     }
 
     @Override
     public ValidationUser validateUser(String token) {
 
-        Jwt jwt = jwtDecoder.decode(token);
+        Jwt jwt = jwtService.readToken(token);
 
         UserEntity user = userRepository.findByUsername(jwt.getSubject())
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Usuario %s no encontrado", jwt.getSubject())));

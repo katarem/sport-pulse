@@ -4,6 +4,7 @@ import com.bytecodes.entity.CreateUser;
 import com.bytecodes.entity.ValidationUser;
 import com.bytecodes.model.User;
 import com.bytecodes.model.UserLoginParameters;
+import com.bytecodes.model.UserToken;
 import com.bytecodes.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLoginParameters loginParameters) {
+    public ResponseEntity<UserToken> login(@RequestBody @Valid UserLoginParameters loginParameters) {
         return ResponseEntity.ok(authService.login(loginParameters.getEmail(), loginParameters.getPassword()));
     }
 
