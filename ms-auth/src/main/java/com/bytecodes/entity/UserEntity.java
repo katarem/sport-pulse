@@ -13,7 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.Instant;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "users")
 @Getter
 @Setter
 @EqualsAndHashCode

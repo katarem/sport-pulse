@@ -6,8 +6,9 @@ import com.bytecodes.entity.UserEntity;
 import com.bytecodes.entity.ValidationUser;
 import com.bytecodes.model.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
-@Mapper
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
     User toModel(UserEntity entity);

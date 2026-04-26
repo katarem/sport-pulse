@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService, UserDetailsService {
@@ -65,6 +67,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
         UserEntity entity = userMapper.toEntity(user);
         entity.setActive(true);
+        entity.setCreatedAt(Instant.now());
 
         entity = userRepository.save(entity);
 
