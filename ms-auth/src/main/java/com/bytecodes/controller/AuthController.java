@@ -1,7 +1,7 @@
 package com.bytecodes.controller;
 
 import com.bytecodes.entity.CreateUser;
-import com.bytecodes.entity.ValidationUser;
+import com.bytecodes.response.ValidationResponse;
 import com.bytecodes.model.User;
 import com.bytecodes.model.UserLoginParameters;
 import com.bytecodes.model.UserToken;
@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,8 +35,9 @@ public class AuthController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<ValidationUser> validateUser(@RequestHeader("Authorization") String authToken) {
-        String token = authToken.substring(13);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ValidationResponse> validateUser(@RequestHeader("Authorization") String authToken) {
+        String token = authToken.replace("Bearer ", "");
         return ResponseEntity.ok(authService.validateUser(token));
     }
 

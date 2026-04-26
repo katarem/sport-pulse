@@ -1,4 +1,4 @@
-package com.bytecodes.exception;
+package com.bytecodes.response;
 
 import java.time.Instant;
 

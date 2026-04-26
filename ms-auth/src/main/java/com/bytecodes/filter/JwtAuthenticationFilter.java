@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            String token = authHeader.substring(13);
+            String token = authHeader.replace("Bearer ", "");
 
             Jwt jwt = jwtService.readToken(token);
 

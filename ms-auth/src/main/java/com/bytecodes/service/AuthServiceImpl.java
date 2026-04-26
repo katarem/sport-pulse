@@ -2,18 +2,22 @@ package com.bytecodes.service;
 
 import com.bytecodes.entity.CreateUser;
 import com.bytecodes.entity.UserEntity;
-import com.bytecodes.entity.ValidationUser;
+import com.bytecodes.exception.UserTokenExpiredException;
+import com.bytecodes.response.ValidationResponse;
 import com.bytecodes.exception.InvalidCredentialsException;
 import com.bytecodes.mapper.UserMapper;
 import com.bytecodes.model.User;
+import com.bytecodes.model.UserRole;
 import com.bytecodes.model.UserToken;
 import com.bytecodes.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -21,6 +25,7 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -59,14 +64,16 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
-    public ValidationUser validateUser(String token) {
+    public ValidationResponse validateUser(String token) {
+        try {
+            Jwt jwt = jwtService.readToken(token);
+            UserEntity user = userRepository.findByUsername(jwt.getSubject())
+                    .orElseThrow(() -> new UsernameNotFoundException(String.format("Usuario %s no encontrado", jwt.getSubject())));
 
-        Jwt jwt = jwtService.readToken(token);
-
-        UserEntity user = userRepository.findByUsername(jwt.getSubject())
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Usuario %s no encontrado", jwt.getSubject())));
-
-        return userMapper.toValidationUser(user);
+            return userMapper.toValidationUser(user);
+        } catch (JwtException e) {
+            throw new UserTokenExpiredException();
+        }
     }
 
     @Override
@@ -75,8 +82,8 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserEntity entity = userMapper.toEntity(user);
-        entity.setActive(true);
         entity.setCreatedAt(Instant.now());
+        entity.setRole(UserRole.USER);
 
         entity = userRepository.save(entity);
 

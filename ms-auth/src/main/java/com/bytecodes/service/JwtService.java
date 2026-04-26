@@ -28,7 +28,7 @@ public class JwtService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("MS-AUTH")
                 .issuedAt(Instant.now())
-                .subject(user.getId().toString())
+                .subject(user.getUsername())
                 .expiresAt(Instant.now().plusMillis(jwtProperties.getExpiration()))
                 .build();
 

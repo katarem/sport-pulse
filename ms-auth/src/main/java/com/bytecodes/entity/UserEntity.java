@@ -1,5 +1,6 @@
 package com.bytecodes.entity;
 
+import com.bytecodes.model.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +9,6 @@ import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -26,7 +26,6 @@ public class UserEntity {
     @Column(unique = true)
     private String email;
     private String password;
-    private Boolean active;
-    @CreatedDate
+    private UserRole role;
     private Instant createdAt;
 }

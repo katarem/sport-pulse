@@ -1,8 +1,12 @@
 package com.bytecodes.exception;
 
+import com.bytecodes.response.ErrorResponse;
+import com.bytecodes.response.ValidationErrorResponse;
+import com.nimbusds.jwt.proc.ExpiredJWTException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,4 +47,20 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(ExpiredJWTException.class)
+    ResponseEntity<ErrorResponse> handleExpiredException(ExpiredJWTException e) {
+        ErrorResponse errorResponse = new ErrorResponse("EXPIRED_TOKEN", "Tu token está expirado", Instant.now());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    ResponseEntity<Void> handleJwtException(JwtException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @ExceptionHandler(UserTokenExpiredException.class)
+    ResponseEntity<ValidationErrorResponse> handleUserTokenExpiredException(UserTokenExpiredException e) {
+        ValidationErrorResponse errorResponse = new ValidationErrorResponse(false, "EXPIRED_TOKEN", e.getMessage(), Instant.now());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
 }
