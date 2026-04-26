@@ -4,6 +4,6 @@ public record Season(
         Integer year,
         String start,
         String end,
-        boolean current,
-        Coverage coverage
+        boolean current
+
 ) {}
