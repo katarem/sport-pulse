@@ -1,5 +1,30 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: ms-auth
-server:
-  port: 8081
+  datasource:
+    url: jdbc:postgresql://localhost:5433/auth_db
+    username: admin
+    password: admin123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+
+api:
+  allowedServices: ["MS-STANDINGS","MS-FIXTURES", "MS-LEAGUES", "MS-TEAMS", "MS-NOTIFICATIONS", "MS-DASHBOARD"]
+
+jwt:
+  secretKey: ${AUTH_JWT_SECRET_KEY}
+  expiration: 3600000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

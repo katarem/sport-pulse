@@ -1,9 +1,18 @@
+server:
+  port: 8086
 spring:
   application:
     name: ms-standings
-server:
-  port: 8086
 ms:
   teams:
     url: ${MS_TEAMS_URL}
+api:
+  football:
+    url: ${FOOTBALL_API_URL}
+    key: ${FOOTBALL_API_KEY}
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health
 

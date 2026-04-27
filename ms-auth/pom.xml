@@ -6,7 +6,6 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.13</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bytecodes</groupId>
 	<artifactId>ms-auth</artifactId>
@@ -49,6 +48,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -81,6 +91,13 @@
             <version>1.5.5.Final</version>
             <scope>provided</scope>
         </dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+			<version>7.0.5</version>
+			<scope>compile</scope>
+		</dependency>
 
     </dependencies>
 
@@ -119,7 +136,11 @@
                                     <artifactId>mapstruct-processor</artifactId>
                                     <version>1.5.5.Final</version>
                                 </path>
-
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok-mapstruct-binding</artifactId>
+									<version>0.2.0</version>
+								</path>
                             </annotationProcessorPaths>
 						</configuration>
 					</execution>
