@@ -1,7 +1,7 @@
 package com.bytecodes.dto.response;
 
 
-public record StadingsDTO (
+public record StadingDTO(
         Integer rank,
         TeamDto team,
         Integer points,
