@@ -11,9 +11,11 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
+
+// responde al endpoint GET/api/standings
 public class StandingResponseDTO {
     private LeagueDTO league;
-    private List<StadingsDTO> stadings;
+    private List<StadingDTO> stadings;
 
 
 }

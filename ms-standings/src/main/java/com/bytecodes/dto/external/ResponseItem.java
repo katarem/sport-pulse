@@ -1,5 +1,5 @@
 package com.bytecodes.dto.external;
 
-public record ResponseItem() {
-    League league
+public record ResponseItem(League league) {
+
 }

@@ -9,6 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+
+// responde al endpoint GET/api/standing/team/{teamid}
 public class StandingResponseDetailDTO {
     private TeamDto team;
     private LeagueDTO league;
