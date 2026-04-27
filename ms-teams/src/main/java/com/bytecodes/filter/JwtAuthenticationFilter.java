@@ -1,0 +1,71 @@
+package com.bytecodes.filter;
+
+import com.bytecodes.dto.external.ValidationResponseDTO;
+import com.bytecodes.service.JwtService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Objects;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final JwtService jwtService;
+
+    @Override
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+
+        // Si ya estamos autenticados (Service Token) ignoramos este filtro
+        if(Objects.nonNull(SecurityContextHolder.getContext().getAuthentication())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String authHeader = request.getHeader("Authorization");
+
+        if(Objects.isNull(authHeader) || authHeader.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        try {
+            String token = authHeader.replace("Bearer ", "");
+
+            ValidationResponseDTO validationResponseDTO = jwtService.validateJwt(token);
+
+            if(!validationResponseDTO.isValid()) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            GrantedAuthority role = new SimpleGrantedAuthority("ROLE_" + validationResponseDTO.getRole());
+
+            UsernamePasswordAuthenticationToken userToken = new UsernamePasswordAuthenticationToken(validationResponseDTO.getUsername(), null, Collections.singletonList(role));
+
+            userToken.setDetails(validationResponseDTO.getUserId());
+
+            SecurityContextHolder.getContext().setAuthentication(userToken);
+
+            filterChain.doFilter(request, response);
+        } catch (Exception exception) {
+            log.warn("Hubo algún problema al autenticar");
+            filterChain.doFilter(request, response);
+        }
+
+    }
+}
