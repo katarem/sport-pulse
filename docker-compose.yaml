@@ -42,6 +42,7 @@ services:
     environment:
       FOOTBALL_API_URL: ${FOOTBALL_API_URL}
       FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
+      AUTH_URL: http://ms-auth:8080
 
   ms-teams:
     build: ./ms-teams
@@ -50,6 +51,7 @@ services:
     environment:
       FOOTBALL_API_URL: ${FOOTBALL_API_URL}
       FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
+      AUTH_URL: http://ms-auth:8080
 
   ms-fixtures:
     build: ./ms-fixtures
@@ -59,6 +61,7 @@ services:
       FOOTBALL_API_URL: ${FOOTBALL_API_URL}
       FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
       TEAMS_SERVICE_URL: http://ms-teams:8080
+      AUTH_URL: http://ms-auth:8080
 
   ms-standings:
     build: ./ms-standings
@@ -68,6 +71,7 @@ services:
       FOOTBALL_API_URL: ${FOOTBALL_API_URL:?La api externa debe estar configurada}
       FOOTBALL_API_KEY: ${FOOTBALL_API_KEY:?La api externa no puede usarse sin la api key}
       TEAMS_SERVICE_URL: http://ms-teams:8080
+      AUTH_URL: http://ms-auth:8080
 
   postgres-notifications:
     image: postgres:15

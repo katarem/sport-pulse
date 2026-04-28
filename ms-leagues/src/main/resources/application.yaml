@@ -12,3 +12,5 @@ api:
   football:
     url: ${FOOTBALL_API_URL}
     key: ${FOOTBALL_API_KEY}
+auth:
+  url: http://localhost:8081

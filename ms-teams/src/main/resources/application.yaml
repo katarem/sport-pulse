@@ -3,8 +3,6 @@ api:
   football:
     key: ${FOOTBALL_API_KEY}
     url: ${FOOTBALL_API_URL}
-jwt:
-  secret: ${AUTH_JWT_SECRET_KEY}
 auth:
   url: http://localhost:8081
 server:
