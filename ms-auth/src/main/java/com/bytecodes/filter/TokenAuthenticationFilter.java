@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -37,8 +38,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         log.info("Comprobando si la api key ha sido mandada");
         String token = request.getHeader("X-SPORTS-PULSE-API-TOKEN");
 
+        if(Objects.isNull(token) || token.isBlank()) {
+            log.warn("La api key que ha mandado no se reconoce");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if(!tokenProperties.getAllowedServices().contains(token)) {
-            log.warn("La api que ha mandado no se reconoce");
+            log.warn("La api key que ha mandado no se reconoce");
             filterChain.doFilter(request, response);
             return;
         }
