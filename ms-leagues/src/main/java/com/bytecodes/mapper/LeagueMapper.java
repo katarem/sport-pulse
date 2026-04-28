@@ -1,6 +1,6 @@
 package com.bytecodes.mapper;
 import com.bytecodes.dto.external.LeagueWrapper;
-import com.bytecodes.dto.external.Season;
+import com.bytecodes.dto.external.SeasonDTO;
 import com.bytecodes.dto.response.LeagueDetailResponseDTO;
 import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.dto.response.SeasonResponseDTO;
@@ -39,7 +39,7 @@ public interface LeagueMapper {
     @Mapping(source = "start", target = "startDate")
     @Mapping(source = "end", target = "endDate")
     @Mapping(source = "current", target = "current")
-    SeasonResponseDTO toCurrentSeasonResponse(Season season);
+    SeasonResponseDTO toCurrentSeasonResponse(SeasonDTO season);
 
 
 }

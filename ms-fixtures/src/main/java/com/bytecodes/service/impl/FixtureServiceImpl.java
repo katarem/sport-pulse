@@ -1,4 +1,4 @@
-package com.bytecodes.service;
+package com.bytecodes.service.impl;
 
 import com.bytecodes.client.FixtureClient;
 import com.bytecodes.client.FixtureQueryFilters;
@@ -13,6 +13,7 @@ import com.bytecodes.mapper.TeamMapper;
 import com.bytecodes.model.Fixture;
 import com.bytecodes.model.FixtureEvent;
 import com.bytecodes.model.LiveFixture;
+import com.bytecodes.service.FixtureService;
 import com.bytecodes.util.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

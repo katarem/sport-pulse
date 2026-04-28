@@ -2,8 +2,7 @@ package com.bytecodes.service.impl;
 
 import com.bytecodes.client.LeagueClient;
 import com.bytecodes.client.LeagueFilter;
-import com.bytecodes.config.CacheConfig;
-import com.bytecodes.dto.external.ApiLeagueResponse;
+import com.bytecodes.dto.external.ApiLeagueResponseDTO;
 import com.bytecodes.dto.external.LeagueWrapper;
 import com.bytecodes.dto.response.LeagueDetailResponseDTO;
 import com.bytecodes.dto.response.LeagueResponseDTO;
@@ -12,7 +11,6 @@ import com.bytecodes.mapper.LeagueMapper;
 import com.bytecodes.service.LeagueService;
 import com.bytecodes.service.LeagueServiceHelper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +47,7 @@ public class LeagueServiceImpl implements LeagueService {
     @Cacheable(value = "leagueById" , key = "#leagueId", unless = "#result == null")
     public LeagueDetailResponseDTO getLeagueById(int leagueId) {
         LeagueFilter filter = LeagueFilter.byId(leagueId);
-        ApiLeagueResponse apiResponse = client.getLeagues(filter);
+        ApiLeagueResponseDTO apiResponse = client.getLeagues(filter);
         LeagueWrapper wrapper = apiResponse.response().stream()
                 .findFirst()
                 .orElseThrow(LeagueNotFoundException::new);

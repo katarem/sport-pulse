@@ -5,9 +5,9 @@ spring:
   application:
     name: ms-auth
   datasource:
-    url: jdbc:postgresql://localhost:5433/auth_db
-    username: admin
-    password: admin123
+    url: jdbc:postgresql://localhost:5433/${AUTH_DATABASE_NAME}
+    username: ${AUTH_DATABASE_USER}
+    password: ${AUTH_DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -28,3 +28,10 @@ management:
     web:
       exposure:
         include: health
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

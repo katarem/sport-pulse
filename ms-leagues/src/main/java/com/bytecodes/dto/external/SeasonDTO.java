@@ -1,9 +1,8 @@
 package com.bytecodes.dto.external;
 
-public record Season(
+public record SeasonDTO(
         Integer year,
         String start,
         String end,
         boolean current
-
 ) {}

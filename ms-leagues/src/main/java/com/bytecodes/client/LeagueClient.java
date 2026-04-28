@@ -1,12 +1,11 @@
 package com.bytecodes.client;
 
 import com.bytecodes.config.LeagueConfig;
-import com.bytecodes.dto.external.ApiLeagueResponse;
+import com.bytecodes.dto.external.ApiLeagueResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = "leagueClient",
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface LeagueClient {
     @GetMapping("/leagues")
-    ApiLeagueResponse getLeagues(
+    ApiLeagueResponseDTO getLeagues(
             @Valid @SpringQueryMap LeagueFilter filter
     );
 }

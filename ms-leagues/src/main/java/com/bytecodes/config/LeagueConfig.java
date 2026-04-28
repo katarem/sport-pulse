@@ -18,8 +18,7 @@ public class LeagueConfig {
 
     @Bean
     public RequestInterceptor requestInterceptor() {
-        return template -> {
-            template.header("x-apisports-key", properties.getKey());
-        };
+        return template ->
+                template.header("x-apisports-key", properties.getKey());
     }
 }

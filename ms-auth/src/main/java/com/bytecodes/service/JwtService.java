@@ -3,6 +3,7 @@ package com.bytecodes.service;
 import com.bytecodes.config.JwtProperties;
 import com.bytecodes.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
@@ -18,6 +19,7 @@ import java.time.Instant;
 @Service
 @RequiredArgsConstructor
 @EnableConfigurationProperties(JwtProperties.class)
+@Slf4j
 public class JwtService {
 
     private final JwtProperties jwtProperties;
@@ -33,7 +35,6 @@ public class JwtService {
                 .build();
 
         JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS256).build();
-
         return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
     }
 

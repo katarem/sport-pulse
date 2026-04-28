@@ -1,6 +1,6 @@
 package com.bytecodes.dto.external;
 
-public record Country(
+public record CountryDTO(
         String name,
         String code,
         String flag
