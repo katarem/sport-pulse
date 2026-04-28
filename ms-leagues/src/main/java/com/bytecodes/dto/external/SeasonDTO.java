@@ -4,6 +4,5 @@ public record SeasonDTO(
         Integer year,
         String start,
         String end,
-        boolean current,
-        CoverageDTO coverage
+        boolean current
 ) {}
