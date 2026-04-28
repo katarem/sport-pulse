@@ -59,6 +59,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserTokenExpiredException.class)
+    ResponseEntity<ValidationErrorResponse> handleExpiredTokenException(UserTokenExpiredException e) {
+        ValidationErrorResponse errorResponse = new ValidationErrorResponse(false, "EXPIRED_TOKEN", e.getMessage(), Instant.now());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+    @ExceptionHandler(UserTokenExpiredException.class)
     ResponseEntity<ValidationErrorResponse> handleUserTokenExpiredException(UserTokenExpiredException e) {
         ValidationErrorResponse errorResponse = new ValidationErrorResponse(false, "EXPIRED_TOKEN", e.getMessage(), Instant.now());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
