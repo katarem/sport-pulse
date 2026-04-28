@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class AuthClientConfig {
 
     @Bean
-    RequestInterceptor requestInterceptor() {
+    RequestInterceptor authRequestInterceptor() {
         return request -> request.header("X-SPORTS-PULSE-API-TOKEN", "MS-TEAMS");
     }
 

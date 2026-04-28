@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Si ya estamos autenticados (Service Token) ignoramos este filtro
         if(Objects.nonNull(SecurityContextHolder.getContext().getAuthentication())) {
+            log.info("Ya había autenticación anterior");
             filterChain.doFilter(request, response);
             return;
         }
@@ -39,6 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if(Objects.isNull(authHeader) || authHeader.isBlank()) {
+            log.info("Entrando al endpoint sin autenticación");
             filterChain.doFilter(request, response);
             return;
         }

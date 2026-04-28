@@ -43,18 +43,22 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
     @Override
     public UserToken login(String email, String password) {
-
+        log.info("AuthService > login");
+        log.debug("Autenticando email={}", email);
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(InvalidCredentialsException::new);
-
+        log.debug("usuario encontrado");
         if(!passwordEncoder.matches(password, user.getPassword())) {
+            log.warn("Contraseña incorrecta");
+            log.info("AuthService < login");
             throw new InvalidCredentialsException();
         }
-
+        log.debug("generando token");
         Jwt jwt = jwtService.generateToken(user);
-
+        log.debug("token generado");
         Duration expirationTime = Duration.between(Instant.now(),jwt.getExpiresAt());
-
+        log.info("Autenticación correcta");
+        log.info("AuthService < login");
         return UserToken.builder()
                 .token(jwt.getTokenValue())
                 .tokenType("Bearer")
@@ -66,19 +70,22 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     @Override
     public ValidationResponse validateUser(String token) {
         try {
+            log.info("AuthtenticationService > validateUser");
             Jwt jwt = jwtService.readToken(token);
             UserEntity user = userRepository.findByUsername(jwt.getSubject())
                     .orElseThrow(() -> new UsernameNotFoundException(String.format("Usuario %s no encontrado", jwt.getSubject())));
 
+            log.info("AuthenticationService < validateUser");
             return userMapper.toValidationUser(user);
         } catch (JwtException e) {
+            log.warn("Token expirado");
             throw new UserTokenExpiredException();
         }
     }
 
     @Override
     public User register(CreateUser user) {
-
+        log.info("AuthService > register");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         UserEntity entity = userMapper.toEntity(user);
@@ -87,6 +94,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
 
         entity = userRepository.save(entity);
 
+        log.info("AuthService < register");
         return userMapper.toModel(entity);
     }
 

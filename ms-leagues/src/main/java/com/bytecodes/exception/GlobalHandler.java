@@ -33,6 +33,6 @@ public class GlobalHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public  ResponseEntity<ErrorResponse> handleInvalidParam(MethodArgumentNotValidException e) {
 
-        return ResponseEntity.badRequest().body(ErrorResponse.of("FIELDS_ERROR", e.getAllErrors().getFirst().getDefaultMessage()));
+        return ResponseEntity.badRequest().body(ErrorResponse.of("FIELDS_ERROR", e.getAllErrors().get(0).getDefaultMessage()));
     }
 }

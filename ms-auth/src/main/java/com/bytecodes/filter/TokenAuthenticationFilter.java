@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,6 +21,7 @@ import java.util.Collections;
 @Component
 @RequiredArgsConstructor
 @EnableConfigurationProperties(TokenProperties.class)
+@Slf4j
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProperties tokenProperties;
@@ -28,16 +30,20 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         if(tokenProperties.getAllowedServices().isEmpty()) {
+            log.warn("Ningún servicio está permitido");
             filterChain.doFilter(request, response);
             return;
         }
-
+        log.info("Comprobando si la api key ha sido mandada");
         String token = request.getHeader("X-SPORTS-PULSE-API-TOKEN");
 
         if(!tokenProperties.getAllowedServices().contains(token)) {
+            log.warn("La api que ha mandado no se reconoce");
             filterChain.doFilter(request, response);
             return;
         }
+
+        log.info("La api key está reconocida, autenticando...");
 
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
 
@@ -45,6 +51,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 new UsernamePasswordAuthenticationToken(token, null, Collections.singletonList(grantedAuthority));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        log.info("Autenticado correctamente, entrando al endpoint");
         filterChain.doFilter(request, response);
+
     }
 }

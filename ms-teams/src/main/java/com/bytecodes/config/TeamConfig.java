@@ -15,9 +15,8 @@ public class TeamConfig {
 
 
     @Bean
-    public RequestInterceptor requestInterceptor() {
-        return template -> {
-            template.header("x-apisports-key",properties.getKey());
-        };
+    public RequestInterceptor teamRequestInterceptor() {
+        return template ->
+                template.header("x-apisports-key",properties.getKey());
     }
 }
