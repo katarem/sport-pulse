@@ -1,14 +1,12 @@
 package com.bytecodes.dto.response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 
 // responde al endpoint GET/api/standing/team/{teamid}
 public class StandingResponseDetailDTO {
