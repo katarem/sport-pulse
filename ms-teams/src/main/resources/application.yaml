@@ -3,7 +3,7 @@ api:
     key: ${FOOTBALL_API_KEY}
     url: ${FOOTBALL_API_URL}
 server:
-  port: 8080
+  port: 8083
 spring:
   application:
     name: ms-teams

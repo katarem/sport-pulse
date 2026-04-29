@@ -3,13 +3,14 @@ package com.bytecodes.client;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
 @Getter
 @Setter
-
+@EqualsAndHashCode
 public class TeamFilter {
     @NotNull(message = "El ID de la liga es obligatorio")
     @Min(value = 1, message = "Coloca el ID de la Liga. Ejm 61")
