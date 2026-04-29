@@ -1,12 +1,14 @@
 package com.bytecodes.dto.external;
 
-public record League(
+import java.util.List;
+
+public record LeagueApiDTO(
         Integer id,
         String name,
         String country,
         String logo,
         String flag,
         Integer season,
-        List<List<Standing>> standings
+        List<List<StandingApiDTO>> standings
 ) {
 }

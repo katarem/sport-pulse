@@ -2,7 +2,7 @@ package com.bytecodes.dto.external;
 
 import com.bytecodes.dto.response.TeamDto;
 
-public record Stading (
+public record StandingApiDTO(
         Integer rank,
         TeamDto team,
         Integer points,
@@ -11,7 +11,7 @@ public record Stading (
         String form,
         String status,
         String description,
-        AllStats all,
+        AllStatsDTO all,
         HomeStats home,
         AwayStats away,
         String update
