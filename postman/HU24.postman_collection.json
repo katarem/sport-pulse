@@ -1,0 +1,502 @@
+{
+  "info": {
+    "_postman_id": "b324551f-ecaa-4c20-886d-1cec0edcaea6",
+    "name": "HU24",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "login",
+      "item": [
+        {
+          "name": "Register ok",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Token is present in the response', function () {",
+                  "    pm.expect(pm.response.json().token).to.not.be.undefined;",
+                  "    pm.environment.set(\"USER_TOKEN\", pm.response.json().token);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "teams",
+      "item": [
+        {
+          "name": "health endpoint",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{EXPIRED_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{TEAMS_BASE_URL}}/actuator/health",
+              "host": [
+                "{{TEAMS_BASE_URL}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "documentation endpoint",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{EXPIRED_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{TEAMS_BASE_URL}}/swagger-ui.html",
+              "host": [
+                "{{TEAMS_BASE_URL}}"
+              ],
+              "path": [
+                "swagger-ui.html"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get teams",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Response is JSON array', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('array')",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{TEAMS_BASE_URL}}/api/teams?league=39&season=2024",
+              "host": [
+                "{{TEAMS_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "teams"
+              ],
+              "query": [
+                {
+                  "key": "league",
+                  "value": "39"
+                },
+                {
+                  "key": "season",
+                  "value": "2024"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "leagues",
+      "item": [
+        {
+          "name": "health endpoint",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{EXPIRED_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{LEAGUES_BASE_URL}}/actuator/health",
+              "host": [
+                "{{LEAGUES_BASE_URL}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "documentation endpoint",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{EXPIRED_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{LEAGUES_BASE_URL}}/swagger-ui.html",
+              "host": [
+                "{{LEAGUES_BASE_URL}}"
+              ],
+              "path": [
+                "swagger-ui.html"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get leagues",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{LEAGUES_BASE_URL}}/api/leagues",
+              "host": [
+                "{{LEAGUES_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "leagues"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "fixtures",
+      "item": [
+        {
+          "name": "health endpoint",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{EXPIRED_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{FIXTURES_BASE_URL}}/actuator/health",
+              "host": [
+                "{{FIXTURES_BASE_URL}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "documentation endpoint",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{EXPIRED_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{FIXTURES_BASE_URL}}/swagger-ui.html",
+              "host": [
+                "{{FIXTURES_BASE_URL}}"
+              ],
+              "path": [
+                "swagger-ui.html"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get fixtures",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-SPORTS-PULSE-API-TOKEN",
+                "value": "MS-FIXTURES",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{FIXTURES_BASE_URL}}/api/fixtures",
+              "host": [
+                "{{FIXTURES_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "fixtures"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

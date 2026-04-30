@@ -1,9 +1,8 @@
 package com.bytecodes.dto.external;
 
 import java.util.List;
-import java.util.Map;
 
-public record ApiLeagueResponse(
+public record ApiLeagueResponseDTO(
         List<LeagueWrapper> response
 ) {}
 

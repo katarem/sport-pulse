@@ -7,6 +7,7 @@ import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.service.LeagueService;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.SpringQueryMap;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class LeagueController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public List<LeagueResponseDTO> getLeagues(
             @Valid @SpringQueryMap LeagueFilter filter) {
         return leagueService.getLeagues(filter);
     }
 
     @GetMapping("/{leagueId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public LeagueDetailResponseDTO getLeagueById(@PathVariable("leagueId") int id) {
         return leagueService.getLeagueById(id);
     }

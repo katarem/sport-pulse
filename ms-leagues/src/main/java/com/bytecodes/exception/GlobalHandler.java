@@ -20,39 +20,19 @@ public class GlobalHandler {
     public ResponseEntity<ErrorResponse> handleLeagueNotFoundException(LeagueNotFoundException e) {
         return  ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.of("LEAGUE_NOT_FOUND",
-                        Map.of("teamId", e.getMessage()))
-                );
+                .body(ErrorResponse.of("LEAGUE_NOT_FOUND", e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleInvalidParam(MethodArgumentTypeMismatchException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of("FIELDS_ERROR",
-                        Map.of(e.getPropertyName(), "El Parametro introducido no es un numero, validelo e intente de nuevo")));
+                .body(ErrorResponse.of("FIELDS_ERROR","El Parametro introducido no es un numero, validelo e intente de nuevo"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public  ResponseEntity<ErrorResponse> handleInvalidParam(MethodArgumentNotValidException e) {
-        Function<ObjectError, String> argumentErrorKeyResolver = err -> {
-            if (err.getCodes() == null)
-                return err.getCode();
-            var longCode = err.getCodes()[0].split("\\.");
-            return longCode[longCode.length - 1];
-        };
 
-        Function<ObjectError, String> argumentErrorValueResolver = err -> {
-            if(Objects.isNull(err.getDefaultMessage()))
-                return "Unknown error";
-            return err.getDefaultMessage();
-        };
-
-        var errorsMessage = e.getAllErrors()
-                .stream().collect(Collectors.groupingBy(
-                        argumentErrorKeyResolver,
-                        Collectors.mapping(argumentErrorValueResolver, Collectors.toList())));
-
-        return ResponseEntity.badRequest().body(ErrorResponse.of("FIELDS_ERROR", errorsMessage));
+        return ResponseEntity.badRequest().body(ErrorResponse.of("FIELDS_ERROR", e.getAllErrors().get(0).getDefaultMessage()));
     }
 }
