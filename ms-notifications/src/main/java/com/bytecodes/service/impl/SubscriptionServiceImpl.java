@@ -16,6 +16,9 @@ import com.bytecodes.repository.SubscriptionRepository;
 import com.bytecodes.service.SubscriptionService;
 import com.bytecodes.validator.SubscriptionValidator;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     @Transactional
+    @Cacheable(value = "subscriptions", key = "#request + '-' + #user.getUserId()")
+    @CacheEvict(value = "subscriptions", key = "#user.getUserId()")
     public Subscription subscribe(CreateSubscriptionRequest request, ApiUser user) throws InvalidSubscriptionException, SubscriptionAlreadyExistsException {
 
         validator.validate(request, user);
@@ -52,6 +57,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
+    @Cacheable(value = "subscriptions", key = "#user.getUserId()")
     public Set<SubscriptionList> getSubscriptions(ApiUser user) {
         var entities = repository.findAllByUserIdAndStatus(user.getUserId(), SubscriptionStatus.ACTIVE);
         return mapper.toModel(entities);
@@ -59,6 +65,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "subscriptions", key = "#user.getUserId()")
     public SubscriptionOperationResponse unsubscribe(UUID subscriptionId, ApiUser user) throws InvalidAccessException, SubscriptionNotFoundException {
 
         var existingSubscription = repository.findById(subscriptionId)
