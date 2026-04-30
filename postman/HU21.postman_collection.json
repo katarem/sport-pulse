@@ -1,0 +1,504 @@
+{
+  "info": {
+    "_postman_id": "8499ef56-0f65-4594-9117-55e88c4f16ed",
+    "name": "HU21",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "setup",
+      "item": [
+        {
+          "name": "Register user 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_1_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_1_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_1_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register user 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_2_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_2_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_2_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_1_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_1_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login user 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_2_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_2_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "subscription to team webhook Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Response body contains expected data', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.userId, \"userId should be a string\").to.be.a('string');",
+                  "    pm.expect(data.userId, \"userId should be the one who did the request\").to.be.eq(pm.environment.get('USER_1_ID'));",
+                  "    pm.expect(data.teamId, \"teamId should be a number\").to.be.a('number');",
+                  "    pm.expect(data.teamId, \"teamId should be the one we sent in the request\").to.be.eq(Number.parseInt(pm.environment.get('TEAM_ID')));",
+                  "    pm.expect(data.type, \"type should be a string\").to.be.a('string');",
+                  "    pm.expect(data.type, \"type should be 'TEAM'\").to.be.eq('TEAM');",
+                  "    pm.expect(data.createdAt, \"createdAt should be a string\").to.be.a('string');",
+                  "    pm.expect(data.channel, \"channel should be string\").to.be.a('string');",
+                  "    pm.expect(data.channel, \"channel should be 'WEBHOOK'\").to.be.eq('WEBHOOK');",
+                  "    pm.expect(data.status, \"status should be a string\").to.be.a('string');",
+                  "    pm.expect(data.status, \"status should be 'ACTIVE'\").to.be.eq('ACTIVE');",
+                  "    pm.expect(data.subscriptionId, \"subscriptionId should be returned\").to.be.a('string');",
+                  "    pm.expect(data.events, 'events should be an array of strings').to.be.an('array');",
+                  "    pm.expect(data.events, 'events should include all the sent parameters').to.include.all.members(['MATCH_START', 'GOAL', 'MATCH_END', 'CARD']);",
+                  "",
+                  "    pm.environment.set('NOTIFICATION_ID', data.subscriptionId);",
+                  "",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{USER_1_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"teamId\": {{TEAM_ID}},\n    \"type\": \"TEAM\",\n    \"events\": [\"MATCH_START\", \"MATCH_END\", \"GOAL\", \"CARD\"],\n    \"webhookUrl\": \"https://my.telegrambot.com/webhook\",\n    \"channel\": \"WEBHOOK\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{NOTIFICATIONS_BASE_URL}}/api/notifications/subscribe",
+              "host": [
+                "{{NOTIFICATIONS_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "notifications",
+                "subscribe"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "unsubscribe ok",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => {",
+              "    pm.response.to.have.status(200)",
+              "})",
+              "",
+              "pm.test('Not found returns expected message', () => {",
+              "    const data = pm.response.json()",
+              "    pm.expect(data.status).to.eql('CANCELLED')",
+              "    pm.expect(data.subscriptionId).to.be.a('string')",
+              "    pm.expect(data.cancelledAt).to.be.a('string')",
+              "",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{USER_1_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"teamId\": {{FIXTURE_ID}},\n    \"type\": \"FIXTURE\",\n    \"events\": [\"MATCH_START\", \"MATCH_END\", \"GOAL\", \"CARD\"],\n    \"webhookUrl\": \"https://my.telegrambot.com/webhook\",\n    \"channel\": \"LOG\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{NOTIFICATIONS_BASE_URL}}/api/notifications/subscriptions/:subscriptionId",
+          "host": [
+            "{{NOTIFICATIONS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "notifications",
+            "subscriptions",
+            ":subscriptionId"
+          ],
+          "variable": [
+            {
+              "key": "subscriptionId",
+              "value": "{{NOTIFICATION_ID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "not found subscription",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 404', () => {",
+              "    pm.response.to.have.status(404)",
+              "})",
+              "",
+              "pm.test('Not found returns expected message', () => {",
+              "    const data = pm.response.json()",
+              "    pm.expect(data.error).to.eql('SUBSCRIPTION_NOT_FOUND')",
+              "    pm.expect(data.message).to.include('La subscripción con ID')",
+              "    pm.expect(data.message).to.include('no existe')",
+              "",
+              "    pm.expect(data.timestamp).to.be.a('string')",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{USER_2_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"teamId\": {{FIXTURE_ID}},\n    \"type\": \"FIXTURE\",\n    \"events\": [\"MATCH_START\", \"MATCH_END\", \"GOAL\", \"CARD\"],\n    \"webhookUrl\": \"https://my.telegrambot.com/webhook\",\n    \"channel\": \"LOG\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{NOTIFICATIONS_BASE_URL}}/api/notifications/subscriptions/:subscriptionId",
+          "host": [
+            "{{NOTIFICATIONS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "notifications",
+            "subscriptions",
+            ":subscriptionId"
+          ],
+          "variable": [
+            {
+              "key": "subscriptionId",
+              "value": "{{$randomUUID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "forbidden subscription",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 403', () => {",
+              "    pm.response.to.have.status(403)",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{USER_2_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"teamId\": {{FIXTURE_ID}},\n    \"type\": \"FIXTURE\",\n    \"events\": [\"MATCH_START\", \"MATCH_END\", \"GOAL\", \"CARD\"],\n    \"webhookUrl\": \"https://my.telegrambot.com/webhook\",\n    \"channel\": \"LOG\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{NOTIFICATIONS_BASE_URL}}/api/notifications/subscriptions/:notificationId",
+          "host": [
+            "{{NOTIFICATIONS_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "notifications",
+            "subscriptions",
+            ":notificationId"
+          ],
+          "variable": [
+            {
+              "key": "notificationId",
+              "value": "{{NOTIFICATION_ID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

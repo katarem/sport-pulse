@@ -1,8 +1,18 @@
 server:
   port: 8088
+auth:
+  url: http://localhost:8081
 spring:
   application:
     name: ms-notifications
+  datasource:
+    url: jdbc:postgresql://localhost:5434/${NOTIFICATIONS_DATABASE_NAME}
+    username: ${NOTIFICATIONS_DATABASE_USER}
+    password: ${NOTIFICATIONS_DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
   management:
     endpoints:
       web:
