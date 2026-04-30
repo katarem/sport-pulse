@@ -16,5 +16,8 @@ public interface MsTeamClient {
     @GetMapping("/api/teams")
     List<TeamClientDTO> getTeams(@Valid @SpringQueryMap StandingFilter filter);
 
+    @GetMapping("/api/teams/{teamId}")
+    TeamClientDTO getTeam(@PathVariable("teamId") Integer id);
+
 
 }

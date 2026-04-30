@@ -10,6 +10,7 @@ import com.bytecodes.dto.external.StandingApiDTO;
 import com.bytecodes.dto.internal.TeamClientDTO;
 import com.bytecodes.dto.response.LeagueDTO;
 import com.bytecodes.dto.response.StandingResponseDTO;
+import com.bytecodes.dto.response.StandingResponseDetailDTO;
 import com.bytecodes.mapper.StandingMapper;
 import com.bytecodes.service.StandingService;
 import lombok.RequiredArgsConstructor;
@@ -58,8 +59,6 @@ public class StandingServiceImpl implements StandingService {
 
         ApiStandingResponseDTO apiResponse = standingClient.getStanding(filter);
         TeamClientDTO msTeam = teamClient.getTeams(filter).get(0);
-        System.out.println("esto es una prueba" + msTeam);
-
 
         List<StandingApiDTO> standings = extractStandings(apiResponse);
 
@@ -80,6 +79,21 @@ public class StandingServiceImpl implements StandingService {
         response.setStadings(items);
 
         return response;
+    }
+
+    @Override
+    @Cacheable(
+            value = "standings",
+            key = "#filter.league + '-' + #filter.season + '-' + #teamId",
+            unless = "#result == null"
+    )
+    public StandingResponseDetailDTO getStandingXTeam(StandingFilter filter , Integer teamId) {
+        TeamClientDTO msTeam = teamClient.getTeam(teamId);
+        ApiStandingResponseDTO apiResponse = standingClient.getStanding(filter);
+        List<StandingApiDTO> standing = extractStandings(apiResponse);
+
+        LeagueApiDTO league = apiResponse.response().get(0).leagueApiDTO();
+        return mapper.standingApiAndTeamClientAndLeagueToDeatailResponseDto(standing.get(0),msTeam,league);
     }
 
 }
