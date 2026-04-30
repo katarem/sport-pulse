@@ -32,6 +32,8 @@ services:
       POSTGRES_DB: ${AUTH_DATABASE_NAME:?La base de datos de auth debe estar configurada}
       POSTGRES_USER: ${AUTH_DATABASE_USER:?El usuario de la base de datos de auth debe estar configurado}
       POSTGRES_PASSWORD: ${AUTH_DATABASE_PASSWORD:?La contraseña de la base de datos de auth debe estar configurada}
+    volumes:
+     - ./scripts/auth-schema.sql:/docker-entrypoint-initdb.d/auth.sql:ro
     ports:
       - "5433:5432"
 
@@ -80,7 +82,7 @@ services:
       POSTGRES_USER: ${NOTIFICATIONS_DATABASE_USER:?El usuario de la base de datos de notifications debe estar configurado}
       POSTGRES_PASSWORD: ${NOTIFICATIONS_DATABASE_PASSWORD:?La contraseña de la base de datos de notifications debe estar configurada}
     volumes:
-      - ./scripts/notifications.sql:/docker-entrypoint-initdb.d/notifications.sql
+      - ./scripts/notifications-schema.sql:/docker-entrypoint-initdb.d/notifications.sql:ro
     ports:
       - "5434:5432"
 
@@ -96,6 +98,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${NOTIFICATIONS_DATABASE_USER:?El usuario de la base de datos de notifications debe estar configurado}
       SPRING_DATASOURCE_PASSWORD: ${NOTIFICATIONS_DATABASE_PASSWORD:?La contraseña de la base de datos de notifications debe estar configurada}
       FIXTURES_SERVICE_URL: http://ms-fixtures:8080
+      AUTH_URL: http://ms-auth:8080
 
   ms-dashboard:
     build: ./ms-dashboard

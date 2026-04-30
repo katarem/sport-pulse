@@ -12,17 +12,17 @@ import java.util.Set;
 
 @Data
 public class CreateSubscriptionRequest {
-    @NotNull
+    @NotNull(message = "El tipo de subscripción no puede ser nulo")
     private SubscriptionType type;
-    @NotNull
-    @Min(1)
+    @Min(value = 1, message = "El ID de equipo solo puede ser positivo")
     private Integer teamId;
-    @NotNull
-    @NotEmpty
+    @Min(value = 1, message = "El ID de fixture solo puede ser positivo")
+    private Integer fixtureId;
+    @NotNull(message = "Se tiene que incluir eventos a suscribir")
+    @NotEmpty(message = "Se tiene que incluir al menos 1 evento para suscribirse")
     private Set<NotificationEvent> events;
-    @NotNull
+    @NotNull(message = "Se necesita un canal de Notificación válido: 'WEBHOOK' o 'LOG'")
     private NotificationChannel channel;
-    @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Webhook URL no puede estar vacío")
     private String webhookUrl;
 }

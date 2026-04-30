@@ -9,6 +9,5 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface SubscriptionRepository extends JpaRepository<SubscriptionEntity, UUID> {
-    Set<SimpleSubscription> getSubscriptionsByUserIdAndStatus(UUID userId, SubscriptionStatus status);
-    long deleteByIdAndUserId(UUID id, UUID userId);
+    Set<SimpleSubscription> findAllByUserIdAndStatus(UUID userId, SubscriptionStatus status);
 }

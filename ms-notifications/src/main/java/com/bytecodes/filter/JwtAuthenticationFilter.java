@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = authHeader.replace("Bearer ", "");
             log.info("autenticando...");
+            log.debug("token: {}", token);
             ValidationResponseDTO validationResponseDTO = jwtService.validateJwt(token);
             log.info("obtenido autenticación del endpoint");
             if(!validationResponseDTO.isValid()) {
@@ -62,11 +64,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(userToken);
 
-            filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            log.warn("Hubo algún problema al autenticar: {}", exception.getMessage());
-            filterChain.doFilter(request, response);
+            log.debug("Hubo algún problema al autenticar: {}", Optional.ofNullable(exception.getMessage())
+                    .orElse("Unknown Error"));
         }
+        
+        filterChain.doFilter(request, response);
 
     }
 }

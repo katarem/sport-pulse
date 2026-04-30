@@ -2,8 +2,9 @@ package com.bytecodes.service.impl;
 
 import com.bytecodes.dto.request.CreateSubscriptionRequest;
 import com.bytecodes.dto.response.SubscriptionOperationResponse;
-import com.bytecodes.entity.SimpleSubscription;
+import com.bytecodes.exception.InvalidAccessException;
 import com.bytecodes.entity.SubscriptionEntity;
+import com.bytecodes.exception.InvalidSubscriptionException;
 import com.bytecodes.exception.SubscriptionAlreadyExistsException;
 import com.bytecodes.exception.SubscriptionNotFoundException;
 import com.bytecodes.mapper.SubscriptionMapper;
@@ -13,30 +14,34 @@ import com.bytecodes.model.SubscriptionList;
 import com.bytecodes.model.SubscriptionStatus;
 import com.bytecodes.repository.SubscriptionRepository;
 import com.bytecodes.service.SubscriptionService;
+import com.bytecodes.validator.SubscriptionValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 @Service
 @RequiredArgsConstructor
-public class SubscriptionImpl implements SubscriptionService {
+public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository repository;
     private final SubscriptionMapper mapper;
+    private final SubscriptionValidator validator;
 
     @Override
-    public Subscription subscribe(CreateSubscriptionRequest request, ApiUser user) {
+    @Transactional
+    public Subscription subscribe(CreateSubscriptionRequest request, ApiUser user) throws InvalidSubscriptionException, SubscriptionAlreadyExistsException {
 
-        this.checkConflict(request, user);
+        validator.validate(request, user);
 
         final var subscriptionModel = mapper.toModel(request);
 
         subscriptionModel.setCreatedAt(Instant.now());
         subscriptionModel.setUserId(user.getUserId());
+        subscriptionModel.setStatus(SubscriptionStatus.ACTIVE);
 
         SubscriptionEntity subscriptionEntity = mapper.toEntity(subscriptionModel);
         subscriptionEntity = repository.save(subscriptionEntity);
@@ -44,31 +49,28 @@ public class SubscriptionImpl implements SubscriptionService {
         return mapper.toModel(subscriptionEntity);
     }
 
-    private void checkConflict(CreateSubscriptionRequest request, ApiUser user) {
-        var existingSubscriptions = repository.getSubscriptionsByUserIdAndStatus(user.getUserId(), SubscriptionStatus.ACTIVE);
-        var requestExistsAlready = existingSubscriptions.stream()
-                .anyMatch(subscriptionExists(request));
 
-        if(requestExistsAlready)
-            throw new SubscriptionAlreadyExistsException();
-    }
 
     @Override
     public Set<SubscriptionList> getSubscriptions(ApiUser user) {
-        var entities = repository.getSubscriptionsByUserIdAndStatus(user.getUserId(), SubscriptionStatus.ACTIVE);
+        var entities = repository.findAllByUserIdAndStatus(user.getUserId(), SubscriptionStatus.ACTIVE);
         return mapper.toModel(entities);
     }
 
     @Override
-    public SubscriptionOperationResponse unsubscribe(UUID subscriptionId, ApiUser user) {
-        long deleted = repository.deleteByIdAndUserId(subscriptionId, user.getUserId());
-        if(deleted != 1)
-            throw new SubscriptionNotFoundException(subscriptionId);
+    @Transactional
+    public SubscriptionOperationResponse unsubscribe(UUID subscriptionId, ApiUser user) throws InvalidAccessException, SubscriptionNotFoundException {
+
+        var existingSubscription = repository.findById(subscriptionId)
+                .orElseThrow(() -> new SubscriptionNotFoundException(subscriptionId));
+
+        if(!existingSubscription.getUserId().equals(user.getUserId()))
+            throw new InvalidAccessException();
+
+        existingSubscription.setStatus(SubscriptionStatus.CANCELLED);
+
         return new SubscriptionOperationResponse(subscriptionId, SubscriptionStatus.CANCELLED, Instant.now());
     }
 
-    private Predicate<SimpleSubscription> subscriptionExists(CreateSubscriptionRequest newSubscription) {
-        return existing -> existing.getTeamId().equals(newSubscription.getTeamId()) &&
-                existing.getChannel().equals(newSubscription.getChannel());
-    }
+
 }
