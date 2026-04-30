@@ -40,6 +40,7 @@ public class SubscriptionController {
         var subscription = subscriptionService.subscribe(request, user);
         return ResponseEntity.ok(subscription);
     }
+
     @DeleteMapping("/subscriptions/{subscriptionId}")
     public ResponseEntity<SubscriptionOperationResponse> unsubscribe(
             @AuthenticationPrincipal ApiUser user,
