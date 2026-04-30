@@ -7,6 +7,9 @@ import com.bytecodes.model.SubscriptionType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +24,8 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode
 public class SubscriptionEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID userId;
     private SubscriptionType type;

@@ -79,6 +79,8 @@ services:
       POSTGRES_DB: ${NOTIFICATIONS_DATABASE_NAME:?La base de datos de notifications debe estar configurada}
       POSTGRES_USER: ${NOTIFICATIONS_DATABASE_USER:?El usuario de la base de datos de notifications debe estar configurado}
       POSTGRES_PASSWORD: ${NOTIFICATIONS_DATABASE_PASSWORD:?La contraseña de la base de datos de notifications debe estar configurada}
+    volumes:
+      - ./scripts/notifications.sql:/docker-entrypoint-initdb.d/notifications.sql
     ports:
       - "5434:5432"
 

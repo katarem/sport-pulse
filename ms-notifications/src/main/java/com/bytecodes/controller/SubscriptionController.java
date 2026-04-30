@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 import java.util.UUID;
 
-@RestControllerAdvice
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/notifications")
 public class SubscriptionController {
