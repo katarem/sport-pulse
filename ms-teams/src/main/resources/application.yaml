@@ -4,7 +4,7 @@ api:
     key: ${FOOTBALL_API_KEY}
     url: ${FOOTBALL_API_URL}
 auth:
-  url: http://localhost:8081
+  url: ${AUTH_URL}
 server:
   port: 8083
 spring:

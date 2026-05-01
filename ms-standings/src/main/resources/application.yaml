@@ -1,18 +1,21 @@
 server:
   port: 8086
+
+teams:
+    url: ${TEAMS_URL}
+auth:
+  url: ${AUTH_URL}
+api:
+  allowedServices: [MS_DASHBOARD]
+  football:
+    key: ${FOOTBALL_API_KEY}
+    url: ${FOOTBALL_API_URL}
 spring:
   application:
     name: ms-standings
-ms:
-  teams:
-    url: ${MS_TEAMS_URL}
-api:
-  football:
-    url: ${FOOTBALL_API_URL}
-    key: ${FOOTBALL_API_KEY}
   management:
     endpoints:
       web:
         exposure:
-          include: health
+          include: healthh
 
