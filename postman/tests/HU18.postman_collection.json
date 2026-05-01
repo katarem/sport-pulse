@@ -1,0 +1,121 @@
+{
+  "info": {
+    "_postman_id": "f36dcedf-40b5-4fca-a34a-c8c1b5a420fe",
+    "name": "MS-STANDINGS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42119428"
+  },
+  "item": [
+    {
+      "name": "StandingCollect",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8086/api/standings?league=143&season=2024",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8086",
+          "path": [
+            "api",
+            "standings"
+          ],
+          "query": [
+            {
+              "key": "league",
+              "value": "143"
+            },
+            {
+              "key": "season",
+              "value": "2024"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "standingTeam",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "standingTeam Wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 502\", function () {\r",
+              "    pm.response.to.have.status(502);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{STANDING_BASE_URL}}/team/0?season=2024&league=140",
+          "host": [
+            "{{STANDING_BASE_URL}}"
+          ],
+          "path": [
+            "team",
+            "0"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": "2024"
+            },
+            {
+              "key": "league",
+              "value": "140"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "STANDING_BASE_URL",
+      "value": ""
+    }
+  ]
+}
