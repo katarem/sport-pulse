@@ -19,15 +19,12 @@ public class SecurityConfig {
             JwtAuthenticationFilter authenticationFilter) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth .anyRequest().permitAll());
-
-
-         //       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-         //      .authorizeHttpRequests(auth -> auth
-         //              .requestMatchers("/v3/api-docs*/", "/swagger-ui.html", "/swagger-ui/**", "/actuator/health").permitAll()
-         //               .anyRequest().authenticated()
-         //      )
-         //       .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/swagger-ui.html", "v3/swagger-ui/**", "/actuator/health").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
