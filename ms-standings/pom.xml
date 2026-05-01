@@ -14,7 +14,7 @@
 
     <groupId>com.bytecodes</groupId>
     <artifactId>ms-standings</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <java.version>17</java.version>
