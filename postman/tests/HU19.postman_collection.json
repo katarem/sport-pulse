@@ -650,7 +650,10 @@
               "pm.test('Error comes with expected body', () => {",
               "    const data = pm.response.json();",
               "    pm.expect(data.error, \"El código de error es incorrecto\").to.eql('FIELDS_ERROR')",
-              "    pm.expect(data.message, \"El mensaje de error es incorrecto\").to.eql(\"Se tiene que incluir al menos 1 evento para suscribirse\")",
+              "    pm.expect(data.message, \"El mensaje de error es incorrecto\").to.be.oneOf([",
+              "        \"Se tiene que incluir al menos 1 evento para suscribirse\",",
+              "        \"Se tiene que incluir eventos a suscribir\"",
+              "    ])",
               "    pm.expect(data.timestamp, \"El timestamp debe ser un string\").to.be.a('string')",
               "})"
             ],

@@ -3,11 +3,10 @@ package com.bytecodes.service;
 
 import com.bytecodes.client.LeagueClient;
 import com.bytecodes.client.LeagueFilter;
-import com.bytecodes.dto.external.ApiLeagueResponse;
+import com.bytecodes.dto.external.ApiLeagueResponseDTO;
 import com.bytecodes.dto.external.LeagueWrapper;
-import com.bytecodes.dto.external.Season;
+import com.bytecodes.dto.external.SeasonDTO;
 import com.bytecodes.dto.response.LeagueDetailResponseDTO;
-import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.dto.response.SeasonResponseDTO;
 import com.bytecodes.exception.LeagueNotFoundException;
 import com.bytecodes.mapper.LeagueMapper;
@@ -49,12 +48,12 @@ public class ServiceTest {
 
         LeagueWrapper wrapper = getLeagueWrapperDTO();
 
-        ApiLeagueResponse apiResponse = mock(ApiLeagueResponse.class);
+        ApiLeagueResponseDTO apiResponse = mock(ApiLeagueResponseDTO.class);
         when(apiResponse.response()).thenReturn(List.of(wrapper));
 
         when(helper.getLastSeasons(anyList())).thenReturn(wrapper.seasons()
                 .stream()
-                .map(Season::year)
+                .map(SeasonDTO::year)
                 .toList());
         
         SeasonResponseDTO seasonResponseDTO = new SeasonResponseDTO();
@@ -71,7 +70,7 @@ public class ServiceTest {
 
         // THEN
         assertSame(mapped, result);
-        assertEquals(wrapper.seasons().stream().map(Season::year).toList(), result.getSeasons());
+        assertEquals(wrapper.seasons().stream().map(SeasonDTO::year).toList(), result.getSeasons());
         assertSame(seasonResponseDTO, result.getCurrentSeason());
 
         verify(client).getLeagues(any(LeagueFilter.class));
@@ -86,7 +85,7 @@ public class ServiceTest {
         // GIVEN
         int teamId = 999;
 
-        ApiLeagueResponse apiResponse = mock(ApiLeagueResponse.class);
+        ApiLeagueResponseDTO apiResponse = mock(ApiLeagueResponseDTO.class);
         when(apiResponse.response()).thenReturn(List.of());
 
         when(client.getLeagues(any(LeagueFilter.class))).thenReturn(apiResponse);

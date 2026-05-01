@@ -7,6 +7,147 @@
   },
   "item": [
     {
+      "name": "setup Copy 3",
+      "item": [
+        {
+          "name": "Register ok",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "get fixtures without filters should return 200",
       "event": [
         {
@@ -251,10 +392,9 @@
               "    pm.response.to.be.json;",
               "    pm.expect(pm.response.json()).to.be.an('object');",
               "    const body = pm.response.json();",
-              "    pm.expect(body.code).to.equal('EXTERNAL_API_ERROR');",
-              "    pm.expect(body.errors).to.haveOwnProperty('plan')",
-              "    pm.expect(body.errors.plan).to.include('Free plans do not have access to this date');",
-              "",
+              "    pm.expect(body.error).to.equal('EXTERNAL_API_ERROR');",
+              "    pm.expect(body.message).to.include('Free plans do not have access to this date');",
+              "    pm.expect(body).to.haveOwnProperty('timestamp')",
               "})"
             ],
             "type": "text/javascript",
@@ -331,9 +471,9 @@
               "    pm.response.to.be.json;",
               "    pm.expect(pm.response.json()).to.be.an('object');",
               "    const body = pm.response.json();",
-              "    pm.expect(body.code).to.equal('FIELD_ERRORS');",
-              "    pm.expect(body.errors).to.haveOwnProperty('date')",
-              "    pm.expect(body.errors.date).to.include('La fecha solo puede darse en formato yyyy-MM-dd');",
+              "    pm.expect(body.error).to.equal('FIELDS_ERROR');",
+              "    pm.expect(body.message).to.include('La fecha solo puede darse en formato yyyy-MM-dd');",
+              "    pm.expect(body).to.haveOwnProperty('timestamp')",
               "",
               "})"
             ],
@@ -384,6 +524,40 @@
         }
       },
       "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{USER_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ]
 }

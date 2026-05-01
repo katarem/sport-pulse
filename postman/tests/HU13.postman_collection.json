@@ -7,6 +7,147 @@
   },
   "item": [
     {
+      "name": "setup Copy 2",
+      "item": [
+        {
+          "name": "Register ok",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "Response Teams",
       "event": [
         {
@@ -85,15 +226,14 @@
               "pm.test(\"Error response structure\", function () {\r",
               "    const json = pm.response.json();\r",
               "    pm.expect(json).to.be.an('object');\r",
-              "    pm.expect(json).to.have.property('code');\r",
-              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('error');\r",
+              "    pm.expect(json).to.have.property('message');\r",
               "    pm.expect(json).to.have.property('timestamp');\r",
               "});\r",
               "pm.test(\"Message content is correct\", function () {\r",
               "    const json = pm.response.json();\r",
-              "    pm.expect(json.code).to.eql(\"FIELDS_ERROR\");\r",
-              "    pm.expect(json.errors).to.have.property('teamId');\r",
-              "    pm.expect(json.errors.teamId).to.include(\"El Parametro introducido no es un numero\");\r",
+              "    pm.expect(json.error).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.message).to.include(\"El Parametro introducido no es un numero\");\r",
               "});"
             ],
             "type": "text/javascript",
@@ -138,15 +278,14 @@
               "pm.test(\"Error response structure\", function () {\r",
               "    const json = pm.response.json();\r",
               "    pm.expect(json).to.be.an('object');\r",
-              "    pm.expect(json).to.have.property('code');\r",
-              "    pm.expect(json).to.have.property('errors');\r",
+              "    pm.expect(json).to.have.property('error');\r",
+              "    pm.expect(json).to.have.property('message');\r",
               "    pm.expect(json).to.have.property('timestamp');\r",
               "});\r",
               "pm.test(\"Message content is correct\", function () {\r",
               "    const json = pm.response.json();\r",
-              "    pm.expect(json.code).to.eql(\"TEAM_NOT_FOUND\");\r",
-              "    pm.expect(json.errors).to.have.property('teamId');\r",
-              "    pm.expect(json.errors.teamId).to.include(\"No existe un equipo con el ID proporcionado\");\r",
+              "    pm.expect(json.error).to.eql(\"TEAM_NOT_FOUND\");\r",
+              "    pm.expect(json.message).to.include(\"No existe un equipo con el ID proporcionado\");\r",
               "});"
             ],
             "type": "text/javascript",
@@ -177,6 +316,40 @@
         }
       },
       "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{USER_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ]
 }
