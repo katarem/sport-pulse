@@ -1,12 +1,88 @@
 spring:
   application:
     name: ms-gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: auth-docs
+              uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/v3/docs/auth
+              filters:
+                - RewritePath=/v3/docs/auth, /v3/api-docs
+            - id: leagues-docs
+              uri: ${LEAGUES_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/v3/docs/leagues
+              filters:
+                - RewritePath=/v3/docs/leagues, /v3/api-docs
+            - id: teams-docs
+              uri: ${TEAMS_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/v3/docs/teams
+              filters:
+                - RewritePath=/v3/docs/teams, /v3/api-docs
+            - id: fixtures-docs
+              uri: ${FIXTURES_SERVICE_URL:http://localhost:8085}
+              predicates:
+                - Path=/v3/docs/fixtures
+              filters:
+                - RewritePath=/v3/docs/fixtures, /v3/api-docs
+            - id: standings-docs
+              uri: ${STANDINGS_SERVICE_URL:http://localhost:8086}
+              predicates:
+                - Path=/v3/docs/standings
+              filters:
+                - RewritePath=/v3/docs/standings, /v3/api-docs
+            - id: notifications-docs
+              uri: ${NOTIFICATIONS_SERVICE_URL:http://localhost:8088}
+              predicates:
+                - Path=/v3/docs/notifications
+              filters:
+                - RewritePath=/v3/docs/notifications, /v3/api-docs
+            - id: dashboard-docs
+              uri: ${DASHBOARD_SERVICE_URL:http://localhost:8089}
+              predicates:
+                - Path=/v3/docs/dashboard
+              filters:
+                - RewritePath=/v3/docs/dashboard, /v3/api-docs
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
 
 ratelimit:
   capacity: 60
   refillAmount: 60
   timeUnit: MINUTES
   time: 1
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/docs/auth
+        name: Auth Service
+      - url: /v3/docs/leagues
+        name: League Service
+      - url: /v3/docs/teams
+        name: Teams Service
+      - url: /v3/docs/fixtures
+        name: Fixture Service
+      - url: /v3/docs/standings
+        name: Standings Service
+      - url: /v3/docs/notifications
+        name: Notifications Service
+      - url: /v3/docs/dashboard
+        name: Dashboard Service
 
 management:
   endpoints:

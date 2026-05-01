@@ -6,6 +6,9 @@ api:
 server:
   port: 8085
 
+auth:
+  urL: http://localhost:8081
+
 spring:
   application:
     name: ms-fixtures

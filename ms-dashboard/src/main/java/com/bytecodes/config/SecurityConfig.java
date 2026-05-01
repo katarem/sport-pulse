@@ -17,7 +17,9 @@ public class SecurityConfig {
                 .sessionManagement(ses ->
                         ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.anyRequest().permitAll());
+                .authorizeHttpRequests(request -> request
+                    .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/swagger-ui.html", "v3/swagger-ui/**", "/actuator/health").permitAll()
+                    .anyRequest().authenticated());
 
         return http.build();
     }
