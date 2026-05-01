@@ -2,9 +2,8 @@ package com.bytecodes.filter;
 
 import com.bytecodes.config.TokenProperties;
 import com.bytecodes.model.ApiUser;
-import com.bytecodes.service.AuthService;
-import com.bytecodes.service.JwtService;
 
+import org.springframework.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,9 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -33,11 +29,9 @@ import java.util.Objects;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProperties tokenProperties;
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         if(tokenProperties.getAllowedServices().isEmpty()) {
             log.warn("Ningún servicio está permitido");
