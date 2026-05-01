@@ -12,5 +12,6 @@ api:
   football:
     url: ${FOOTBALL_API_URL}
     key: ${FOOTBALL_API_KEY}
+  allowedServices: ["MS-STANDINGS","MS-FIXTURES", "MS-LEAGUES", "MS-TEAMS", "MS-NOTIFICATIONS", "MS-DASHBOARD"]
 auth:
   url: http://localhost:8081

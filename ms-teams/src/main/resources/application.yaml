@@ -1,5 +1,5 @@
 api:
-  allowedServices: [MS_DASHBOARD]
+  allowedServices: ["MS-STANDINGS","MS-FIXTURES", "MS-LEAGUES", "MS-TEAMS", "MS-NOTIFICATIONS", "MS-DASHBOARD"]
   football:
     key: ${FOOTBALL_API_KEY}
     url: ${FOOTBALL_API_URL}
