@@ -17,5 +17,5 @@ spring:
     endpoints:
       web:
         exposure:
-          include: healthh
+          include: health
 
