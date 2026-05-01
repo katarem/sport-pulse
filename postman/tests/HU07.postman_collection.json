@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "9b40ea9f-3397-40c1-9d49-8ce82ca91ef5",
+    "_postman_id": "60e22399-3028-4301-afe8-3716c4e65f0e",
     "name": "HU07",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "52397136"
@@ -177,7 +177,7 @@
               "pm.test('Response contains error field', () => {",
               "    const data = pm.response.json()",
               "    pm.expect(data.error).to.eql('FIELDS_ERROR')",
-              "    pm.expect(data.message).to.include('debe ser una dirección de correo electrónico con formato correcto')",
+              "    pm.expect(data.message).to.include('Debe ser una dirección de correo electrónico con formato correcto')",
               "})"
             ],
             "type": "text/javascript",
