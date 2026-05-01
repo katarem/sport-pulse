@@ -10,6 +10,9 @@ import com.bytecodes.model.ApiUser;
 import com.bytecodes.model.Subscription;
 import com.bytecodes.model.SubscriptionList;
 import com.bytecodes.service.SubscriptionService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,6 +37,8 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
+    @Operation(summary = "Endpoint para obtener las suscripciones activas")
+    @SecurityRequirement(name = "JWT")
     @GetMapping("/subscriptions")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<SubscriptionList>> getSubscriptions(@AuthenticationPrincipal ApiUser user) {
@@ -41,6 +46,8 @@ public class SubscriptionController {
         return ResponseEntity.ok(subscriptions);
     }
 
+    @Operation(summary = "Endpoint para suscribirse a un flujo de notificaciones")
+    @SecurityRequirement(name = "JWT")
     @PostMapping("/subscribe")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Subscription> subscribe(@AuthenticationPrincipal ApiUser user,
@@ -49,6 +56,9 @@ public class SubscriptionController {
         return new ResponseEntity<>(subscription, HttpStatus.CREATED);
     }
 
+
+    @Operation(summary = "Endpoint para quitar la suscripción de una notificación")
+    @SecurityRequirement(name = "JWT")
     @DeleteMapping("/subscriptions/{subscriptionId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<SubscriptionOperationResponse> unsubscribe(@AuthenticationPrincipal ApiUser user,

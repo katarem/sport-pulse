@@ -33,10 +33,10 @@ public class OpenAPIConfig {
     @Bean
     OpenAPI openAPI() {
         return new OpenAPI()
-            .servers(List.of(new Server().url("http://localhost:8085")))
+            .servers(List.of(new Server().url("http://localhost:8086")))
             .info(new Info()
-            .title("Sport-Pulse Fixtures")
-            .description("Microservicio de fixtures para Sports-Pulse")
+            .title("Sport-Pulse Standings")
+            .description("Microservicio de standings para Sports-Pulse")
             .version("1.0.0").contact(new Contact().name("Equipo 2 - Andrés Diaz y Cris (Katarem)")));
     }
 
