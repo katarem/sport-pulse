@@ -1,0 +1,291 @@
+{
+  "info": {
+    "_postman_id": "e8b8e1aa-f908-4511-921f-3f8928f1123d",
+    "name": "HU15",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "setup Copy 4",
+      "item": [
+        {
+          "name": "Register ok",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "get live fixtures ok",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "})",
+              "",
+              "pm.test('Returns the array', () => {",
+              "    pm.response.to.be.json;",
+              "    pm.expect(pm.response.json()).to.be.an('array');",
+              "})",
+              "",
+              "pm.test('Elements come with the expected keys', () => {",
+              "    const body = pm.response.json();",
+              "    for (fixture of body) {",
+              "        pm.expect(fixture).to.haveOwnProperty('id');",
+              "        pm.expect(fixture).to.haveOwnProperty('date');",
+              "        pm.expect(fixture).to.haveOwnProperty('status');",
+              "        pm.expect(fixture.status).to.haveOwnProperty('short');",
+              "        pm.expect(fixture.status).to.haveOwnProperty('long');",
+              "        pm.expect(fixture).to.haveOwnProperty('homeTeam');",
+              "        pm.expect(fixture.homeTeam).to.haveOwnProperty('id');",
+              "        pm.expect(fixture.homeTeam).to.haveOwnProperty('name');",
+              "        pm.expect(fixture.homeTeam).to.haveOwnProperty('logo');",
+              "        pm.expect(fixture.homeTeam).to.haveOwnProperty('goals');",
+              "",
+              "        pm.expect(fixture).to.haveOwnProperty('awayTeam');",
+              "        pm.expect(fixture.awayTeam).to.haveOwnProperty('id');",
+              "        pm.expect(fixture.awayTeam).to.haveOwnProperty('name');",
+              "        pm.expect(fixture.awayTeam).to.haveOwnProperty('logo');",
+              "        pm.expect(fixture.awayTeam).to.haveOwnProperty('goals');",
+              "",
+              "        pm.expect(fixture).to.haveOwnProperty('league');",
+              "        pm.expect(fixture.league).to.haveOwnProperty('id');",
+              "        pm.expect(fixture.league).to.haveOwnProperty('name');",
+              "        pm.expect(fixture.league).to.haveOwnProperty('round');",
+              "",
+              "        pm.expect(fixture).to.haveOwnProperty('venue');",
+              "        pm.expect(fixture.venue).to.haveOwnProperty('name');",
+              "        pm.expect(fixture.venue).to.haveOwnProperty('city');",
+              "    }",
+              "})",
+              "",
+              "pm.test('Live fixtures come with elapsed time', () => {",
+              "    const body = pm.response.json();",
+              "    for (fixture of body) {",
+              "        pm.expect(fixture).haveOwnProperty('elapsed');",
+              "        pm.expect(fixture.elapsed).to.not.be.null;",
+              "        pm.expect(fixture.elapsed).to.be.above(0);",
+              "    }",
+              "});",
+              "",
+              "pm.test('Live fixtures have the only expected status', () => {",
+              "    ",
+              "    const allowedStatus = ['1H', 'HT', '2H'];",
+              "    ",
+              "    const body = pm.response.json();",
+              "",
+              "",
+              "    for (fixture of body) {",
+              "        pm.expect(fixture).haveOwnProperty('status');",
+              "        pm.expect(fixture.status.short).to.not.be.null;",
+              "       ",
+              "        const isAllowedStatus = allowedStatus.some(stat => fixture.status.short === stat);",
+              "        pm.expect(isAllowedStatus, `Solo deberían llegar 1H, HT, o 2H pero llegó ${fixture.some}`).to.be.true",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{FIXTURES_BASE_URL}}/api/fixtures/live",
+          "host": [
+            "{{FIXTURES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "fixtures",
+            "live"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{USER_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

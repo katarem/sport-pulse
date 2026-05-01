@@ -1,0 +1,359 @@
+{
+  "info": {
+    "_postman_id": "ee2da2d2-5793-437f-9456-6f8121503745",
+    "name": "HU10",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "setup",
+      "item": [
+        {
+          "name": "Register ok",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get All Leagues",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "pm.test(\"Response is an array\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('array');\r",
+              "});\r",
+              "pm.test(\"Each league has required properties\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "\r",
+              "    json.forEach(league => {\r",
+              "        pm.expect(league).to.have.property('id');\r",
+              "        pm.expect(league).to.have.property('name');\r",
+              "        pm.expect(league).to.have.property('type');\r",
+              "        pm.expect(league).to.have.property('country');\r",
+              "        pm.expect(league).to.have.property('logo');\r",
+              "        pm.expect(league).to.have.property('currentSeason');\r",
+              "        pm.expect(league).to.have.property('startDate');\r",
+              "        pm.expect(league).to.have.property('endDate');\r",
+              "    });\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/api/leagues",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "leagues"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Leagues Season Wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('error');\r",
+              "    pm.expect(json).to.have.property('message');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.error).to.eql(\"FIELDS_ERROR\");\r",
+              "    pm.expect(json.message).to.eql(\"Sólo se puede las temporadas del 2022 al 2024\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/api/leagues?season=22222",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "leagues"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": "22222"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Leagues Country Wrong",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {\r",
+              "    pm.response.to.have.status(400);\r",
+              "});\r",
+              "pm.test(\"Error response structure\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json).to.be.an('object');\r",
+              "    pm.expect(json).to.have.property('error');\r",
+              "    pm.expect(json).to.have.property('message');\r",
+              "    pm.expect(json).to.have.property('timestamp');\r",
+              "});\r",
+              "pm.test(\"Message content is correct\", function () {\r",
+              "    const json = pm.response.json();\r",
+              "    pm.expect(json.error).to.be.eq('FIELDS_ERROR');\r",
+              "    pm.expect(json.message).to.be.oneOf([\r",
+              "        'El país solo puede contener letras',\r",
+              "        'Minimo cuatro caracteres y en inglés, Ej. Spain'\r",
+              "    ])\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{LEAGUES_BASE_URL}}/api/leagues?country",
+          "host": [
+            "{{LEAGUES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "leagues"
+          ],
+          "query": [
+            {
+              "key": "country",
+              "value": null
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{USER_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "LEAGUES_BASE_URL",
+      "value": ""
+    }
+  ]
+}

@@ -7,11 +7,11 @@ import lombok.Data;
 
 @Data
 public class CreateUser {
-    @NotBlank
+    @NotBlank(message = "Username no puede estar vacío")
     @Pattern(regexp = "^\\S+$", message = "El nombre de usuario no puede estar vacío ni tener espacios")
     private String username;
-    @Email
-    @NotBlank
+    @Email(message = "Debe ser una dirección de correo electrónico con formato correcto")
+    @NotBlank(message = "El mail no debe estar vacío")
     private String email;
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "La contraseña debe tener mínimo 8 caracteres, al menos una mayúscula y un número.")
     private String password;

@@ -16,9 +16,10 @@ public class ApiUtil {
      */
     public static void checkError(FixtureApiResponse<?> apiResponse) {
         if (!(apiResponse.getErrors() instanceof List<?>)) {
+            @SuppressWarnings("unchecked")
             var errorMap = (Map<String, String>) apiResponse.getErrors();
             var errorKey = errorMap.keySet().stream().findFirst().get();
-            throw new ExternalApiException(errorKey + ":" + errorMap.get(errorKey));
+            throw new ExternalApiException(errorMap.get(errorKey));
         }
     }
 
