@@ -36,7 +36,7 @@ public class GlobalHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_GATEWAY)
-                .body(ErrorResponse.of("TEAM_SERVICE_ERROR",ex.getMessage().split("\"teamId\":\"")[1].split("\"")[0]));
+                .body(ErrorResponse.of("TEAM_SERVICE_ERROR",ex.getMessage().split("\"message\":\"")[1].split("\"")[0]));
     }
 
 

@@ -10,10 +10,10 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 
-// responde al endpoint GET/api/standings
+
 public class StandingResponseDTO {
     private LeagueDTO league;
-    private List<StandingDTO> stadings;
+    private List<StandingDTO> standings;
 
 
 }

@@ -76,8 +76,7 @@ public class StandingServiceImpl implements StandingService {
         // Construir respuesta final
         StandingResponseDTO response = new StandingResponseDTO();
         response.setLeague(leagueDTO);
-        response.setStadings(items);
-
+        response.setStandings(items);
         return response;
     }
 

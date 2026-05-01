@@ -9,8 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class StandingDTO{ Integer rank;
-   private TeamDto team;
+public class StandingDTO {
+    Integer rank;
+    private TeamDto team;
     private Integer points;
     private Integer played;
     private Integer won;
