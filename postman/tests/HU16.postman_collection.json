@@ -1,0 +1,316 @@
+{
+  "info": {
+    "_postman_id": "eb3ba65e-cebb-4757-8322-9ffae5343d4f",
+    "name": "HU16",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52397136"
+  },
+  "item": [
+    {
+      "name": "setup Copy 5",
+      "item": [
+        {
+          "name": "Register ok",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', () => {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "",
+                  "pm.test('Body should be valid JSON', () => {",
+                  "    pm.expect(pm.response.json()).to.be.an('object')",
+                  "});",
+                  "",
+                  "pm.test('Response body contains id', () => {",
+                  "    pm.expect(pm.response.json().id).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_ID\", pm.response.json().id)",
+                  "    pm.environment.set(\"USER_EMAIL\", pm.response.json().email)",
+                  "    pm.environment.set(\"USER_USERNAME\", pm.response.json().username)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"{{$randomUUID}}\",\n    \"email\": \"{{$randomUUID}}@email.com\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/register",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test('Token and info is returned', () => {",
+                  "    const data = pm.response.json()",
+                  "    pm.expect(data.token).to.not.be.null",
+                  "    pm.expect(data.tokenType).to.be.eq('Bearer')",
+                  "    pm.expect(data.expiresIn).to.be.above(0)",
+                  "    pm.expect(data.userId).to.not.be.null",
+                  "",
+                  "    pm.environment.set(\"USER_TOKEN\", data.token)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{USER_EMAIL}}\",\n    \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{AUTH_BASE_URL}}/api/auth/login",
+              "host": [
+                "{{AUTH_BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "noauth"
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Events returns ok",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Should return 200', () => {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Should return an array', () => {",
+              "    pm.response.to.be.json;",
+              "    const data = pm.response.json();",
+              "    pm.expect(data).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('If not empty, should have the keys', () => {",
+              "    ",
+              "    const data = pm.response.json();",
+              "",
+              "    for (event of data) {",
+              "",
+              "        pm.expect(event).to.have.all.keys('elapsed', 'type', 'detail', 'team', 'player', 'assist');",
+              "        pm.expect(event.team).to.have.all.keys('id', 'name');",
+              "        pm.expect(event.player).to.have.all.keys('id', 'name');",
+              "        ",
+              "",
+              "        pm.expect(event.elapsed, 'Elapsed debe ser un número').to.be.a('number');",
+              "        pm.expect(event.type, 'Type debe ser un string').to.be.a('string');",
+              "        pm.expect(event.detail, 'Detail debe ser un string').to.be.a('string');",
+              "        pm.expect(event.team.id, 'Team ID debe ser un número').to.be.a('number');",
+              "        pm.expect(event.team.name, 'Team name debe ser un string').to.be.a('string');",
+              "        pm.expect(event.player.id, 'Player ID debe ser un número').to.be.a('number');",
+              "        pm.expect(event.player.name, 'Player name debe ser un string').to.be.a('string');",
+              "",
+              "        if (event.assist !== null) {",
+              "            pm.expect(event.assist).to.have.all.keys('id', 'name');",
+              "            pm.expect(event.assist.id, 'Assist ID debe ser un número').to.be.a('number');",
+              "            pm.expect(event.assist.name, 'Assist name debe ser un string').to.be.a('string');",
+              "        }",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{FIXTURES_BASE_URL}}/api/fixtures/:fixtureId/events",
+          "host": [
+            "{{FIXTURES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "fixtures",
+            ":fixtureId",
+            "events"
+          ],
+          "variable": [
+            {
+              "key": "fixtureId",
+              "value": "{{FIXTURE_ID}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Events Invalid ID returns error",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Should return 400', () => {",
+              "    pm.response.to.have.status(400)",
+              "});",
+              "",
+              "pm.test('Should return an error', () => {",
+              "    pm.response.to.be.json;",
+              "    const data = pm.response.json();",
+              "    pm.expect(data).to.be.an('object');",
+              "});",
+              "",
+              "pm.test('Error should be with keys', () => {",
+              "    const data = pm.response.json();",
+              "    pm.expect(data).to.have.property('error');",
+              "    pm.expect(data).to.have.property('message');",
+              "    pm.expect(data).to.have.property('timestamp');",
+              "",
+              "    pm.expect(data.error).to.equal('EXTERNAL_API_ERROR');",
+              "    pm.expect(data.message).to.be.eq('The Fixture field cannot exceed 10 characters in length.')",
+              "});     "
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{FIXTURES_BASE_URL}}/api/fixtures/:fixtureId/events",
+          "host": [
+            "{{FIXTURES_BASE_URL}}"
+          ],
+          "path": [
+            "api",
+            "fixtures",
+            ":fixtureId",
+            "events"
+          ],
+          "variable": [
+            {
+              "key": "fixtureId",
+              "value": "10000000000"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{USER_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

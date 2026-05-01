@@ -1,10 +1,10 @@
 package com.bytecodes.mapper;
 
 
-import com.bytecodes.dto.external.Country;
-import com.bytecodes.dto.external.League;
+import com.bytecodes.dto.external.CountryDTO;
+import com.bytecodes.dto.external.LeagueDTO;
 import com.bytecodes.dto.external.LeagueWrapper;
-import com.bytecodes.dto.external.Season;
+import com.bytecodes.dto.external.SeasonDTO;
 import com.bytecodes.dto.response.LeagueResponseDTO;
 import com.bytecodes.dto.response.SeasonResponseDTO;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class MapperTest {
     }
 
         public static LeagueWrapper getLeagueWrapperDTO () {
-            League league = new League(
+            LeagueDTO league = new LeagueDTO(
                     100,
                     "Real Madrid",
                     "RMA",
@@ -43,14 +43,14 @@ public class MapperTest {
 
             );
 
-            Country country = new Country(
+            CountryDTO country = new CountryDTO(
                     "Spain",
                     "Code",
                     "una flag"
 
             );
 
-            List<Season> seasons = List.of(new Season(
+            List<SeasonDTO> seasons = List.of(new SeasonDTO(
                     2025,
                     "2025-04-26",
                     "2025-04-27",
@@ -66,7 +66,7 @@ public class MapperTest {
     void should_map_season_to_season_response() {
 
         // GIVEN
-        Season season = new Season(
+        SeasonDTO season = new SeasonDTO(
                 2025,
                 "2025-04-26",
                 "2025-04-27",
