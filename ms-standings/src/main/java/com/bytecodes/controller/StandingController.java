@@ -7,6 +7,7 @@ import com.bytecodes.service.StandingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.openfeign.SpringQueryMap;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +21,16 @@ public class StandingController {
     private final StandingService standingService;
 
     @GetMapping
-    public StandingResponseDTO getStandings(@Valid @SpringQueryMap StandingFilter filter) {
+    @PreAuthorize("hasAnyRole('USER')")
+    public StandingResponseDTO getStandings(@Valid StandingFilter filter) {
         return standingService.getStandings(filter);
     }
 
     @GetMapping("/team/{teamId}")
-    public StandingResponseDetailDTO getStandings(@Valid @SpringQueryMap StandingFilter filter, @PathVariable Integer teamId) {
-        return standingService.getStandingXTeam(filter,teamId);
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public StandingResponseDetailDTO getStandings(StandingFilter filter,
+                                                  @PathVariable Integer teamId) {
+        return standingService.getStandingByTeam(filter,teamId);
     }
 
 }

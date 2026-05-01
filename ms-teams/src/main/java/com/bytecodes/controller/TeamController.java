@@ -23,7 +23,7 @@ public class TeamController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
-    public List<TeamResponseDTO> getTeams(@Valid @SpringQueryMap TeamFilter filter) {
+    public List<TeamResponseDTO> getTeams(@Valid TeamFilter filter) {
         return teamService.getTeams(filter);
     }
 

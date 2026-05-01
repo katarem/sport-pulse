@@ -29,14 +29,14 @@ public class StandingServiceImpl implements StandingService {
     private final StandingMapper mapper;
 
 
-    @Override
-    public List<StandingApiDTO> extractStandings(ApiStandingResponseDTO response) {
+
+    private List<StandingApiDTO> extractStandings(ApiStandingResponseDTO response) {
 
         if (response.response().isEmpty()) {
             throw new IllegalStateException("API devolvió response vacío");
         }
 
-        var league = response.response().get(0).leagueApiDTO();
+        LeagueApiDTO league = response.response().get(0).leagueApiDTO();
         if (league == null) {
             throw new IllegalStateException("leagueApiDTO es null");
         }
@@ -87,7 +87,7 @@ public class StandingServiceImpl implements StandingService {
             key = "#filter.league + '-' + #filter.season + '-' + #teamId",
             unless = "#result == null"
     )
-    public StandingResponseDetailDTO getStandingXTeam(StandingFilter filter , Integer teamId) {
+    public StandingResponseDetailDTO getStandingByTeam(StandingFilter filter , Integer teamId) {
         TeamClientDTO msTeam = teamClient.getTeam(teamId);
         ApiStandingResponseDTO apiResponse = standingClient.getStanding(filter);
         List<StandingApiDTO> standing = extractStandings(apiResponse);
