@@ -49,12 +49,6 @@ spring:
               filters:
                 - RewritePath=/v3/docs/dashboard, /v3/api-docs
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-
 ratelimit:
   capacity: 60
   refillAmount: 60
@@ -76,7 +70,7 @@ springdoc:
       - url: /v3/docs/teams
         name: Teams Service
       - url: /v3/docs/fixtures
-        name: Fixture Service
+        name: Fixtures Service
       - url: /v3/docs/standings
         name: Standings Service
       - url: /v3/docs/notifications
