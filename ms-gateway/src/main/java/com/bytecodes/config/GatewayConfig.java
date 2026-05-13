@@ -21,6 +21,7 @@ public class GatewayConfig {
 
         return route("auth")
                 .GET("/api/auth/**", http())
+                .POST("/api/auth/**", http())
                 .before(uri(environment.getProperty("AUTH_SERVICE_URL", "http://localhost:8081")))
                 .filter(rateLimitFilter)
                 .build()
@@ -51,6 +52,8 @@ public class GatewayConfig {
 
                 .and(route("notifications")
                         .GET("/api/notifications/**", http())
+                        .POST("/api/notifications/**", http())
+                        .DELETE("/api/notifications/**", http())
                         .before(uri(environment.getProperty("NOTIFICATIONS_SERVICE_URL", "http://localhost:8088")))
                         .filter(rateLimitFilter)
                         .build())
