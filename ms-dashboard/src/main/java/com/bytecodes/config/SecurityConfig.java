@@ -19,8 +19,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                     .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/v3/swagger-ui.html", "v3/swagger-ui/**", "/actuator/health").permitAll()
-                    .anyRequest().authenticated());
-
+                    .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint((req, res, e) ->
+                        res.sendError(401, "Unauthorized"))
+                    .accessDeniedHandler((req, res, e) ->
+                        res.sendError(403, "Forbidden"))
+        		);
         return http.build();
     }
 

@@ -26,7 +26,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.anyRequest().permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(tokenAuthenticationFilter, JwtAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter, JwtAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint((req, res, e) ->
+                        res.sendError(401, "Unauthorized"))
+                    .accessDeniedHandler((req, res, e) ->
+                        res.sendError(403, "Forbidden"))
+        		);
 
         return http.build();
     }
