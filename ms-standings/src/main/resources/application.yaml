@@ -19,3 +19,10 @@ spring:
         exposure:
           include: health
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+    com:
+      bytecodes: DEBUG

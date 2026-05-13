@@ -12,8 +12,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.HashSet;
+
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity()
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -24,9 +26,14 @@ public class SecurityConfig {
                 .sessionManagement(ses ->
                         ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.anyRequest().permitAll())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(tokenAuthenticationFilter, JwtAuthenticationFilter.class);
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+               // .addFilterBefore(tokenAuthenticationFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }

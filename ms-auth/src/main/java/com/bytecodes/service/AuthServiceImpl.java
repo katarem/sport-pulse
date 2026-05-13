@@ -16,10 +16,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+/* CAMBIO DE LIBRERIA
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtException;
+
+ */
+import com.nimbusds.jwt.SignedJWT;
+
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -42,7 +48,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
     }
 
     @Override
-    public UserToken login(String email, String password) {
+    public UserToken login(String email, String password) throws ParseException {
         log.info("AuthService > login");
         log.debug("Autenticando email={}", email);
         UserEntity user = userRepository.findByEmail(email)
@@ -53,6 +59,7 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
             log.info("AuthService < login");
             throw new InvalidCredentialsException();
         }
+        /*
         log.debug("generando token");
         Jwt jwt = jwtService.generateToken(user);
         log.debug("token generado");
@@ -65,19 +72,41 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
                 .userId(user.getId())
                 .expiresIn(expirationTime.toMillis())
                 .build();
+
+         */
+        log.debug("generando token");
+        SignedJWT jwt = jwtService.generateToken(user);
+        log.debug("token generado");
+
+        Instant expiresAt = jwt.getJWTClaimsSet().getExpirationTime().toInstant();
+        Duration expirationTime = Duration.between(Instant.now(), expiresAt);
+        log.info("Autenticación correcta");
+        log.info("AuthService < login");
+
+        String tokenValue = jwt.serialize();
+
+        return UserToken.builder()
+                .token(tokenValue)
+                .tokenType("Bearer")
+                .userId(user.getId())
+                .expiresIn(expirationTime.toMillis())
+                .build();
     }
 
     @Override
     public ValidationResponse validateUser(String token) {
         try {
             log.info("AuthtenticationService > validateUser");
-            Jwt jwt = jwtService.readToken(token);
-            UserEntity user = userRepository.findByUsername(jwt.getSubject())
-                    .orElseThrow(() -> new UsernameNotFoundException(String.format("Usuario %s no encontrado", jwt.getSubject())));
+            // JWT jwt = jwtService.readToken(token);
+            SignedJWT jwt = jwtService.readToken(token);
+// Aqui quitamos el getSubject() y colocamos el getJWT....
+            UserEntity user = userRepository.findByUsername(jwt.getJWTClaimsSet().getSubject())
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario %s no encontrado"));
 
             log.info("AuthenticationService < validateUser");
             return userMapper.toValidationUser(user);
-        } catch (JwtException e) {
+            // quitamos la exception JwtException y ponemos Exception
+        } catch (Exception e) {
             log.warn("Token expirado");
             throw new UserTokenExpiredException();
         }

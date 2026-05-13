@@ -1,6 +1,7 @@
 package com.bytecodes.filter;
 
 import com.bytecodes.service.JwtService;
+import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.jwt.Jwt;
+//import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,6 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // Si ya estamos autenticados (Service Token) ignoramos este filtro
         if(Objects.nonNull(SecurityContextHolder.getContext().getAuthentication())) {
@@ -47,10 +55,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             String token = authHeader.replace("Bearer ", "");
+            SignedJWT jwt = jwtService.readToken(token);
+            // Reemplazamos por Signed
+            //Jwt jwt = jwtService.readToken(token);
 
-            Jwt jwt = jwtService.readToken(token);
-
-            UserDetails user = userDetailsService.loadUserByUsername(jwt.getSubject());
+           // UserDetails user = userDetailsService.loadUserByUsername(jwt.getSubject());
+            UserDetails user = userDetailsService.loadUserByUsername(jwt.getJWTClaimsSet().getSubject());
 
             UsernamePasswordAuthenticationToken userToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 

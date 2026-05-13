@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name="ms-teams",url = "${teams.url}")
+@FeignClient(name="ms-teams",url = "${TEAMS_SERVICE_URL}")
 public interface MsTeamClient {
 
     @GetMapping("/api/teams")
